@@ -7,3 +7,8 @@ if(!function_exists("coreArray")){
         return $data->toArray();
     }
 }
+if(!function_exists('getIdUser')){
+    function getIdUser(){
+        return @request()->input('userInfo.id') ?? @request()->header('userId');
+    }
+}

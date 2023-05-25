@@ -2,19 +2,10 @@
 
 namespace App\Http\Requests\AppCore;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\BaseRequest;
 
-class RegisterRequest extends FormRequest
+class RegisterRequest extends BaseRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
 
     /**
      * Get the validation rules that apply to the request.
@@ -23,8 +14,6 @@ class RegisterRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            //
-        ];
+        return config('social.custom_request.app.register');
     }
 }

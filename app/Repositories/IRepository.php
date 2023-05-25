@@ -44,4 +44,11 @@ interface IRepository
      * @return array|object
      */
     public function updateOrInsert(array $conditions,array $attributes);
+
+    /**
+     * @param array $conditions
+     * @param array $select
+     * @return mixed
+     */
+    public function findBy(array $conditions , array $select);
 }

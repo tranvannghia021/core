@@ -11,7 +11,13 @@ class UserRepository extends BaseRepository
         parent::__construct($user);
     }
 
+    /**
+     * @override
+     * @param $conditions
+     * @param $select
+     * @return array|mixed
+     */
     public function findBy($conditions , $select = ["*"] ){
-       return coreArray($this->model->select($select)->where($conditions)->get());
+       return coreArray($this->model->select($select)->where($conditions)->first());
     }
 }

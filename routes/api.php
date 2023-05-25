@@ -23,8 +23,7 @@ Route::group(['prefix'=>'{platform}'],function (){
 Route::group(['prefix'=>'app'],function (){
     Route::post('login',[AppController::class,'login']);
     Route::post('register',[AppController::class,'register']);
-    Route::delete('delete',[AppController::class,'delete']);
-    Route::get('info',[AppController::class,'user']);
+    Route::delete('delete',[AppController::class,'delete'])->middleware('core');
+    Route::get('info',[AppController::class,'user'])->middleware('core');
     Route::post('re-send',[AppController::class,'reSendLinkEmail']);
-    Route::get('verify',[AppController::class,'verify']);
 });

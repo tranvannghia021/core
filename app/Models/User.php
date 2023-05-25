@@ -15,6 +15,7 @@ class User extends Authenticatable
     {
         $this->setConnection('database_core');
         $this->setTable('users');
+        self::addColumnCustom();
         parent::__construct($attributes);
     }
     public static $customsFill=[
@@ -49,9 +50,12 @@ class User extends Authenticatable
         'expire_token',
         'is_disconnect',
         'settings',
-        'other'
-
     ];
+    private function addColumnCustom(){
+        foreach (self::$customsFill as $value){
+            $this->fillable[]=$value['column'];
+        }
+    }
     /**
      * The accessors to append to the model's array form.
      *
@@ -67,7 +71,6 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'phone'=>'number'
     ];
 
     /**
@@ -78,5 +81,19 @@ class User extends Authenticatable
     public function getFullNameAttribute()
     {
         return "{$this->first_name} {$this->last_name}";
+    }
+
+    /**
+     * Get the user's avatar.
+     *
+     * @return string
+     */
+    public function getAvatarAttribute($value)
+    {
+        $url=null;
+        if(!is_null($value) && !str_contains($value,'http')){
+            $url=config('app.url').'/storage/app/'.$value;
+        }
+        return $url;
     }
 }

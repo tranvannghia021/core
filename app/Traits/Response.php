@@ -18,4 +18,20 @@ trait Response
             'error'=>$e,
         ],$code);
     }
+
+    public function ResponseException(string $e, int $code = Code::HTTP_BAD_REQUEST){
+        return response()->json([
+            'status'=>false,
+            'message'=>'Something went wrong ,Please contact us for assistance',
+            'error'=>$e,
+        ],$code);
+    }
+
+    public function ResponseRequest(array $e, string $message = 'Something went wrong ,Please contact us for assistance', int $code = Code::HTTP_UNPROCESSABLE_ENTITY){
+        return response()->json([
+            'status'=>false,
+            'message'=>$message,
+            'error'=>$e,
+        ],$code);
+    }
 }

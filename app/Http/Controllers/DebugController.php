@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Facades\Core;
 use App\Helpers\CoreHelper;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -12,7 +13,7 @@ class DebugController extends Controller
 {
     public function test(Request $request){
 
-      dd(CoreHelper::ip());
+      dd(Core::user());
 
     }
 

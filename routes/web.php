@@ -13,6 +13,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/verify',[\App\Http\Controllers\AppController::class, 'verify'])->middleware('auth.verify');

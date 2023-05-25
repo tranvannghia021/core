@@ -43,6 +43,7 @@ class BaseRepository implements IRepository
         try {
             $model = $this->model->create($data);
         } catch (\Exception $e) {
+            throw $e;
             return [];
         }
         return $model;
@@ -63,6 +64,7 @@ class BaseRepository implements IRepository
                 $model->update($data);
             }
         } catch (\Exception $e) {
+            throw $e;
             return [];
         }
         return $model;
@@ -82,7 +84,7 @@ class BaseRepository implements IRepository
                 $model->delete();
             }
         } catch (\Exception $e) {
-
+            throw $e;
             return false;
         }
         return true;
@@ -97,5 +99,14 @@ class BaseRepository implements IRepository
      */
     public function updateOrInsert($conditions,array $attributes){
         return $this->model->updateOrInsert($conditions,$attributes)->first();
+    }
+
+    /**
+     * @param $conditions
+     * @param $select
+     * @return mixed
+     */
+    public function findBy($conditions , $select = ['*']){
+        return $this->model->where($conditions)->select($select)->first();
     }
 }

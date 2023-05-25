@@ -2,7 +2,10 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\CoreAuthMiddleware;
+use App\Http\Middleware\GlobalJwtMiddleware;
 use App\Http\Middleware\SocialAuthMiddleware;
+use App\Http\Middleware\VerifyMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -44,6 +47,7 @@ class Kernel extends HttpKernel
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            GlobalJwtMiddleware::class
         ],
     ];
 
@@ -65,5 +69,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'social.auth'=>SocialAuthMiddleware::class,
+        'auth.verify'=>VerifyMiddleware::class,
+        'core'=>CoreAuthMiddleware::class
     ];
 }

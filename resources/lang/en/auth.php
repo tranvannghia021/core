@@ -14,6 +14,14 @@ return [
     */
 
     'failed' => 'These credentials do not match our records.',
+    'register' => [
+        'success' => 'Register successfully.',
+        'exists' => 'This account already exists.',
+    ],
+    'delete'=>[
+        'success' => 'Delete successfully.',
+    ],
+    'expire'=>'Token is expires',
     'password' => 'The provided password is incorrect.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
 

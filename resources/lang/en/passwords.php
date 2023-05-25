@@ -15,8 +15,11 @@ return [
 
     'reset' => 'Your password has been reset!',
     'sent' => 'We have emailed your password reset link!',
+    're_sent'=>'Verification code has been sent to your email!',
     'throttled' => 'Please wait before retrying.',
     'token' => 'This password reset token is invalid.',
+    'verify'=>'This validation token is not valid.',
     'user' => "We can't find a user with that email address.",
+    'incorrect'=>'Wrong password'
 
 ];

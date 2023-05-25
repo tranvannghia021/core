@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Facades\Core;
+use App\Service\AppCoreService;
+use App\Service\Contracts\UserContract;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +16,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(
+            UserContract::class,
+            AppCoreService::class);
     }
 
     /**
@@ -23,6 +28,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+
     }
 }

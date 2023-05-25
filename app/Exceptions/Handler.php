@@ -3,10 +3,12 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Sentry\Laravel\Integration;
 use Throwable;
 
 class Handler extends ExceptionHandler
 {
+    use ExceptionTrait;
     /**
      * A list of the exception types that are not reported.
      *
@@ -35,7 +37,18 @@ class Handler extends ExceptionHandler
     public function register()
     {
         $this->reportable(function (Throwable $e) {
-            //
+            if (config('app.env') !== 'local' && app()->bound('sentry')) {
+                app('sentry')->captureException($e);
+            }
         });
+    }
+    /**
+     * @param $request
+     * @param Throwable $e
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|\Symfony\Component\HttpFoundation\Response|null
+     */
+    public function render($request, Throwable $e)
+    {
+        return  $this->apiException($request, $e);
     }
 }

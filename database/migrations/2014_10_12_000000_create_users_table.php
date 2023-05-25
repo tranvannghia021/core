@@ -15,7 +15,7 @@ class CreateUsersTable extends Migration
     {
         Schema::connection('database_core')->create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('internal_id');
+            $table->string('internal_id')->nullable();
             $table->string('platform')->default(config('social.app.name'));
             $table->string('email')->nullable();
             $table->timestamp('email_verified_at')->nullable();
@@ -30,7 +30,7 @@ class CreateUsersTable extends Migration
             $table->text('address')->nullable();
             $table->text('refresh_token')->nullable();
             $table->text('access_token')->nullable();
-            $table->dateTime('expire_token');
+            $table->dateTime('expire_token')->nullable();
             $table->boolean('is_disconnect')->default(false);
             $table->jsonb('settings')->nullable();
            if(count(\App\Models\User::$customsFill) > 0){

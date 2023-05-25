@@ -75,5 +75,36 @@ return [
             'useTLS' => true,
         ],
     ],
+    'custom_request'=>[
+        'app'=>[
+            'register'=>[
+                'email'=>'required|email|string',
+                'password'=>'required|min:6|max:20',
+                'confirm'=>'required_with:password|same:password|min:6|max:20',
+                'first_name'=>'required',
+                'last_name'=>'required',
+                'avatar'=>'required',
+                'gender'=>'required',
+                'phone'=>'required|string',
+                'birthday'=>'required|before:yesterday|date|date_format:Y-m-d',
+                'address'=>'nullable',
+                'refresh_token'=>'nullable',
+                'access_token'=>'nullable',
+                'expire_token'=>'nullable',
+                'settings'=>'nullable',
+                'other'=>'nullable',
+            ]
+        ]
+    ],
+    'storage'=>[
+        'disk'=>'public',
+        'image_ext'=>['png', 'jpg', 'jpeg', 'gif']
+    ],
+    'queue'=>[
+        'mail'=>[
+            'on_queue'=>'verify-email',
+            'on_connection'=>'redis'
+        ]
+    ]
 
 ];
