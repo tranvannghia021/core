@@ -88,6 +88,7 @@ class CoreHelper
 
     public static function pusher(string $prefix, array $data)
     {
+
         $pusher = new Pusher(
             config('social.pusher.key'),
             config('social.pusher.secret'),

@@ -4,6 +4,7 @@ namespace App\Http;
 
 use App\Http\Middleware\CoreAuthMiddleware;
 use App\Http\Middleware\GlobalJwtMiddleware;
+use App\Http\Middleware\RefreshMiddleware;
 use App\Http\Middleware\SocialAuthMiddleware;
 use App\Http\Middleware\VerifyMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
@@ -70,6 +71,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'social.auth'=>SocialAuthMiddleware::class,
         'auth.verify'=>VerifyMiddleware::class,
-        'core'=>CoreAuthMiddleware::class
+        'core'=>CoreAuthMiddleware::class,
+        'refresh'=>RefreshMiddleware::class
     ];
 }

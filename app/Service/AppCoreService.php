@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Facades\Core;
 use App\Helpers\CoreHelper;
 use App\Jobs\VerifyEmailJob;
 use App\Repositories\UserRepository;
@@ -85,7 +86,7 @@ class AppCoreService implements UserContract
         }
     }
 
-    public function reSendLinkEmail(string $email){
+    public function reSendLinkEmail(string $email,string $type){
         $result=$this->userRepository->findBy([
             'email'=>$email,
             'platform'=>config('social.app.name'),
@@ -94,7 +95,7 @@ class AppCoreService implements UserContract
         if(empty($result)){
             throw new Exception(__('passwords.user'));
         }
-        VerifyEmailJob::dispatch($result)
+        VerifyEmailJob::dispatch($result,$type)
             ->onConnection(config('social.queue.mail.on_connection'))
             ->onQueue(config('social.queue.mail.on_queue'));
         return $this->Response([],__('passwords.re_sent'));
@@ -125,5 +126,66 @@ class AppCoreService implements UserContract
     public function check()
     {
         return !is_null($this->user);
+    }
+
+    public function updateUser(array $payload)
+    {
+        unset($payload['password'],$payload['internal_id'],
+                $payload['platform'],$payload['email_verified_at'],$payload['refresh_token'],
+                $payload['access_token'],$payload['expire_token'],$payload['is_disconnect']);
+        if(isset($payload['avatar'])){
+                $avatar=CoreHelper::saveImgBase64('app',$payload['avatar']);
+                if($avatar === false) throw new Exception(__('validation.image_64'));
+                $payload['avatar']=$avatar;
+        }
+       $this->userRepository->update(Core::user()['id'],$payload);
+       return $this->Response([],__('auth.update.success'));
+    }
+
+    public function changePassword(int $id, string $passwordOld,string $password)
+    {
+       $user=$this->userRepository->find($id);
+       if(empty($user)){
+           throw new Exception(__('passwords.user'));
+       }
+       if(!Hash::check($passwordOld,$user['password'])){
+           throw new Exception(__('auth.password'));
+       }
+       $user->update([
+           'password'=>Hash::make($password),
+       ]);
+       return $this->Response([],__('passwords.reset'));
+
+    }
+
+    public function forgotPassword(string $email)
+    {
+        $user=$this->userRepository->findBy([
+            'email'=>$email,
+            'status'=>true,
+            'is_disconnect'=>false,
+            'platform'=>config('social.app.name')
+        ],[
+            'id','email'
+        ]);
+        if(empty($user)){
+            throw new Exception(__('passwords.user'));
+        }
+        VerifyEmailJob::dispatch($user,'forgot')
+            ->onConnection(config('social.queue.mail.on_connection'))
+            ->onQueue(config('social.queue.mail.on_queue'));
+        return $this->Response([],__('passwords.re_sent'));
+    }
+
+    public function verifyForgot(array $payload)
+    {
+       $user=$this->userRepository->find($payload['id']);
+       if(empty($user)){
+           throw new Exception(__('passwords.user'));
+       }
+       CoreHelper::pusher('forgot_'.$user['email'],[
+           'id'=>$user['id'],
+           'email'=>$user['email']
+       ]);
     }
 }

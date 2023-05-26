@@ -21,6 +21,12 @@ return [
     'delete'=>[
         'success' => 'Delete successfully.',
     ],
+    'update'=>[
+        'success' => 'Update successfully.',
+    ],
+    'create'=>[
+        'success' => 'Create successfully.',
+    ],
     'expire'=>'Token is expires',
     'password' => 'The provided password is incorrect.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',

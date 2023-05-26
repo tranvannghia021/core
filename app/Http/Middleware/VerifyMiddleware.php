@@ -23,8 +23,8 @@ class VerifyMiddleware
             $token=$request->input('z');
             $result=CoreHelper::decodeState($token);
             $isExpire=CoreHelper::expireToken($result['expire']);
-            if(Cache::get('ip_'.$result['id']) === null){
-                Cache::put('ip_'.$result['id'],$request->input('ip'),config('social.key_jwt.time.token'));
+            if(Cache::get('ip_'.$request->input('type').$result['id']) === null){
+                Cache::put('ip_'.$request->input('type').$result['id'],$request->input('ip'),config('social.key_jwt.time.token'));
             }else{
                 $isExpire=true;
             }

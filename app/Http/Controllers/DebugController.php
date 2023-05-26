@@ -13,7 +13,9 @@ class DebugController extends Controller
 {
     public function test(Request $request){
 
-      dd(Core::user());
+        CoreHelper::pusher('forgot_',[
+           's'
+        ]);
 
     }
 
