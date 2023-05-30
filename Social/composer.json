@@ -17,7 +17,7 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Core\\Social\\": "src/"
+            "Devtvn\\Social\\": "src/"
         },
         "files": [
             "./src/Helpers/GlobalHelper.php"

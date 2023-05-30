@@ -1,5 +1,6 @@
 <?php
 namespace Devtvn\Social\Traits;
+
 use \Illuminate\Http\Response as Code;
 trait Response
 {
