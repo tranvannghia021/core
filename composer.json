@@ -1,0 +1,45 @@
+{
+    "name": "devtvn/social",
+    "description": "This is a package management users.",
+    "type": "library",
+    "require": {
+        "php": ">=7.4",
+        "illuminate/support": ">=5.8",
+        "firebase/php-jwt": "^6.5",
+        "fruitcake/laravel-cors": "^2.0",
+        "guzzlehttp/guzzle": "^7.0.1",
+        "laravel/framework": "^8.75",
+        "laravel/sanctum": "^2.11",
+        "laravel/tinker": "^2.5",
+        "predis/predis": "^2.1",
+        "pusher/pusher-php-server": "^7.2"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Devtvn\\Social\\": "src/"
+        },
+        "files": [
+            "./src/Helpers/GlobalHelper.php"
+        ]
+    },
+    "authors": [
+        {
+            "name": "tranvannghia021",
+            "email": "tranvannghia021@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Devtvn\\Social\\CoreServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "scripts": {
+        "post-update-cmd": [
+            "@php artisan vendor:publish --tag=core-social --ansi --force"
+        ]
+    }
+}
