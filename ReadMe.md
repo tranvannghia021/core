@@ -1,14 +1,8 @@
 <p align="center"><a href="#" target="_blank"><img src="https://i.postimg.cc/tTssS34W/package-core.png" width="400"></a></p>
 <p style="align-items: center; margin:5px auto;display: flex;justify-content: center">Social authentication multiple-platform and management users</p>
-<div style="display: flex;justify-content: center;align-items: center">
+<div style="display: flex;justify-content: center;align-items: center; width:100%;height:100px">
 <div style="width: 50px;object-fit: cover">
-<img src="https://static.vecteezy.com/system/resources/previews/009/995/711/large_2x/3d-facebook-logo-icon-blue-color-free-png.png"></img>
-</div>
-<div style="width: 50px;object-fit: cover">
-<img src="https://static.vecteezy.com/system/resources/previews/009/826/612/large_2x/glossy-tik-tok-icon-3d-render-free-png.png"></img>
-</div>
-<div style="width: 50px;object-fit: cover">
-<img src="https://static.vecteezy.com/system/resources/previews/009/428/338/large_2x/3d-social-media-icons-isometric-google-free-png.png"></img>
+<img src="https://d1sr4ybm5bj1wl.cloudfront.net/img/2017-02-08-Setup-SocialAuth-for-Django/social_login.png"></img>
 </div>
 
 </div>
