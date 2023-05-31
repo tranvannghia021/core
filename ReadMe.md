@@ -1,11 +1,10 @@
 <p align="center"><a href="#" target="_blank"><img src="https://i.postimg.cc/tTssS34W/package-core.png" width="400"></a></p>
 <p style="align-items: center; margin:5px auto;display: flex;justify-content: center">Social authentication multiple-platform and management users</p>
-<div style="display: flex;justify-content: center;align-items: center; width:100%;height:100px">
-<div style="width: 50px;object-fit: cover">
-<img src="https://d1sr4ybm5bj1wl.cloudfront.net/img/2017-02-08-Setup-SocialAuth-for-Django/social_login.png"></img>
-</div>
 
-</div>
+## feature
+- facebook
+- google
+- tiktok
 
 ## Official Core SDKs
 <div>
