@@ -4,7 +4,9 @@ use Devtvn\Social\Helpers\EnumChannel;
 use Devtvn\Social\Service\SocialPlatform\FacebookService;
 use Devtvn\Social\Service\SocialPlatform\GithubService;
 use Devtvn\Social\Service\SocialPlatform\GoogleService;
+use Devtvn\Social\Service\SocialPlatform\InstagramService;
 use Devtvn\Social\Service\SocialPlatform\TiktokService;
+use Devtvn\Social\Service\SocialPlatform\TwitterService;
 
 class CoreService
 {
@@ -23,6 +25,12 @@ class CoreService
                 break;
             case EnumChannel::GITHUB:
                 $service=app(GithubService::class);
+                break;
+            case EnumChannel::TWITTER:
+                $service=app(TwitterService::class);
+                break;
+            case EnumChannel::INSTAGRAM_BASIC:
+                $service=app(InstagramService::class);
                 break;
         }
         return $service->setVariable($variable);

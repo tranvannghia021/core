@@ -156,4 +156,12 @@ class CoreHelper
         );
     }
 
+    public static function setIpState(&$payload){
+        $result=self::ip();
+        $payload['ip']=request()->ip();
+        if($result['status']){
+            $payload['ip']=$result['ip'];
+        }
+    }
+
 }

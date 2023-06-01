@@ -2,7 +2,7 @@
 
 namespace Devtvn\Social\Service\SocialPlatform;
 
-use Devtvn\Social\Ecommerces\RestApi\Google\Google;
+use Devtvn\Social\Facades\Social;
 use Devtvn\Social\Helpers\CoreHelper;
 use Devtvn\Social\Helpers\EnumChannel;
 use Devtvn\Social\Repositories\UserRepository;
@@ -14,9 +14,9 @@ class GoogleService implements ICoreService
 {
     use Response;
     protected $google,$userRepository;
-    public function __construct(Google $google)
+    public function __construct()
     {
-        $this->google=$google;
+        $this->google=Social::driver(EnumChannel::GOOGLE);
         $this->userRepository=app(UserRepository::class);
     }
 
@@ -27,11 +27,6 @@ class GoogleService implements ICoreService
 
     public function generateUrl(array $payload)
     {
-        $result=CoreHelper::ip();
-        $payload['ip']=request()->ip();
-        if($result['status']){
-            $payload['ip']=$result['ip'];
-        }
         return $this->Response([
             'url'=>$this->google->generateUrl($payload),
             'pusher'=>[
@@ -43,7 +38,7 @@ class GoogleService implements ICoreService
 
     public function auth(array $payload)
     {
-        $token=$this->google->getToken($payload['code']);
+        $token=$this->google->getAccessToken($payload['code']);
         if(!$token['status']){
             CoreHelper::pusher($payload['ip'],[
                 'status'=>false,
@@ -55,7 +50,7 @@ class GoogleService implements ICoreService
             return;
         }
         if($payload['type'] === 'auth'){
-            $user=$this->google->setToken($token['data']['access_token'])->getProfile();
+            $user=$this->google->setToken($token['data']['access_token'])->profile();
             if(!$user['status']){
                 CoreHelper::pusher($payload['ip'],[
                     'status'=>false,

@@ -1,6 +1,6 @@
 <?php
 namespace Devtvn\Social\Service\SocialPlatform;
-use Devtvn\Social\Ecommerces\RestApi\Facebook\Facebook;
+use Devtvn\Social\Facades\Social;
 use Devtvn\Social\Helpers\CoreHelper;
 use Devtvn\Social\Helpers\EnumChannel;
 use Devtvn\Social\Repositories\UserRepository;
@@ -12,9 +12,9 @@ class FacebookService implements ICoreService
 {
     use Response;
     protected $facebookApi,$userRepository;
-    public function __construct(Facebook $facebookApi)
+    public function __construct()
     {
-        $this->facebookApi=$facebookApi;
+        $this->facebookApi=Social::driver(EnumChannel::FACEBOOK);
         $this->userRepository=app(UserRepository::class);
     }
 
@@ -25,24 +25,19 @@ class FacebookService implements ICoreService
 
     public function generateUrl(array $payload)
     {
-        $result=CoreHelper::ip();
-        $payload['ip']=request()->ip();
-        if($result['status']){
-            $payload['ip']=$result['ip'];
-        }
         return $this->Response([
             'url'=>$this->facebookApi->generateUrl($payload),
-            'pusher'=>[
-                'channel'=>config('social.pusher.channel'),
-                'event'=>config('social.pusher.event').$payload['ip']
-            ]
+                'pusher'=>[
+                    'channel'=>config('social.pusher.channel'),
+                    'event'=>config('social.pusher.event').$payload['ip']
+                ]
         ]);
     }
 
     public function auth(array $payload)
     {
         try {
-            $token=$this->facebookApi->getToken($payload['code']);
+            $token=$this->facebookApi->getAccessToken($payload['code']);
             if(!$token['status']){
                 CoreHelper::pusher($payload['ip'],[
                     'status'=>false,
@@ -51,7 +46,7 @@ class FacebookService implements ICoreService
                 return;
             }
             if($payload['type'] == 'auth'){
-                $user=$this->facebookApi->setToken($token['data']['access_token'])->getProfile();
+                $user=$this->facebookApi->setToken($token['data']['access_token'])->profile();
                 if(!$user['status']){
                     CoreHelper::pusher($payload['ip'],[
                         'status'=>false,

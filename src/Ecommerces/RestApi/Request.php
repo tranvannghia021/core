@@ -5,11 +5,29 @@ use GuzzleHttp\Exception\GuzzleException;
 
 class Request
 {
-    protected $_client;
+    protected $_client,$token,$scope;
+    protected $endpoint,$version,$clientId,$secretId,$redirect,$refresh;
 
     public function __construct()
     {
         $this->_client = new Client();
+    }
+
+    protected function implodeScope($separator = ','){
+        return implode($separator,$this->scope);
+    }
+
+
+    public function setRefresh(string $refresh): Request
+    {
+        $this->refresh=$refresh;
+        return $this;
+    }
+
+    public function setToken(string $token): Request
+    {
+        $this->token=$token;
+        return $this;
     }
 
     /**

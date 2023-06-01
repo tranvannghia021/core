@@ -17,10 +17,10 @@ return [
         ],
         'alg' => 'HS256',
         'publish' => [
-            'key' => env('KEY_JWT') // token for state
+            'key' => env('KEY_JWT','c3o&re') // token for state
         ],
         'private' => [
-            'key' => env('KEY_JWT_PRIVATE')
+            'key' => env('KEY_JWT_PRIVATE','soc@ia$lco#re')
         ]
     ],
     'platform' => [
@@ -28,19 +28,31 @@ return [
             'client_id' => env('FACEBOOK_CLIENT_ID'),
             'redirect_uri' => env('APP_URL') . '/api/facebook/handle/auth',
             'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
-            'base_api' => env('FACEBOOK_BASE_API'),
-            'version' => env('FACEBOOK_VERSION'),
+            'base_api' => env('FACEBOOK_BASE_API','https://graph.facebook.com'),
+            'version' => env('FACEBOOK_VERSION','v16.0'),
             'scope' => [
                 'public_profile',
                 'email'
+            ],
+            'field'=>[
+                'id',
+                'name',
+                'first_name',
+                'last_name',
+                'email',
+                'birthday',
+                'gender',
+                'hometown',
+                'location',
+                'picture',
             ]
         ],
         'google' => [
-            'client_id' => env('GOOGLE_CLIENT_ID'),
+            'client_id' => env('GOOGLE_CLIENT_ID','googleapis.com'),
             'redirect_uri' => env('APP_URL') . '/api/google/handle/auth',
             'client_secret' => env('GOOGLE_CLIENT_SECRET'),
             'base_api' => env('GOOGLE_BASE_API'),
-            'version' => env('GOOGLE_VERSION'),
+            'version' => env('GOOGLE_VERSION','v2'),
             'scope' => [
                 'https://www.googleapis.com/auth/userinfo.email',
                 'https://www.googleapis.com/auth/user.addresses.read',
@@ -54,14 +66,63 @@ return [
         ],
         'github' => [
             'app_id' => env('GITHUB_APP_ID'),
-            'host' => env('GITHUB_HOST'),
             'client_id' => env('GITHUB_CLIENT_ID'),
             'redirect_uri' => env('APP_URL') . '/api/github/handle/auth',
             'client_secret' => env('GITHUB_CLIENT_SECRET'),
-            'base_api' => env('GITHUB_BASE_API'),
-            'version' => env('GITHUB_VERSION'),
+            'base_api' => env('GITHUB_BASE_API','https://api.github.com'),
+            'version' => env('GITHUB_VERSION','v1'),
             'scope' => [
                 'user'
+            ]
+        ],
+        'tiktok' => [
+            'app_id' => env('TIKTOK_APP_ID'),
+            'client_id' => env('TIKTOK_CLIENT_ID'),
+            'redirect_uri' => env('APP_URL') . '/api/tiktok/handle/auth',
+            'client_secret' => env('TIKTOK_CLIENT_SECRET'),
+            'base_api' => env('TIKTOK_BASE_API','https://open.tiktokapis.com'),
+            'version' => env('TIKTOK_VERSION','v2'),
+            'scope' => [
+                'user.info.basic',
+                'user.info.profile',
+                'user.info.stats'
+            ],
+            'field'=>[
+                'open_id','union_id','avatar_url','display_name',
+                'bio_description',
+                'profile_deep_link',
+                'is_verified',
+                'follower_count',
+                'following_count',
+                'likes_count',
+                'video_count',
+            ]
+        ],
+        'twitter' => [
+            'client_id' => env('TWITTER_CLIENT_ID'),
+            'redirect_uri' => env('APP_URL') . '/api/twitter/handle/auth',
+            'client_secret' => env('TWITTER_CLIENT_SECRET'),
+            'base_api' => env('TWITTER_BASE_API','https://api.twitter.com'),
+            'version' => env('TWITTER_VERSION','2'),
+            'scope' => [
+               'users.read','tweet.read'
+            ],
+            'field'=>[
+
+            ]
+        ],
+        'instagram_basic' => [
+            'client_id' => env('INSTAGRAM_CLIENT_ID'),
+            'consumer_key'=>env('INSTAGRAM_CONSUMER_KEY'),
+            'consumer_secret'=>env('INSTAGRAM_CONSUMER_SECRET'),
+            'redirect_uri' => env('APP_URL') . '/api/instagram/handle/auth',
+            'client_secret' => env('INSTAGRAM_CLIENT_SECRET'),
+            'base_api' => env('INSTAGRAM_BASE_API','https://graph.instagram.com'),
+            'scope' => [
+               'email', 'public_profile'
+            ],
+            'field'=>[
+                'id','username'
             ]
         ],
     ],

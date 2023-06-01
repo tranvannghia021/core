@@ -10,7 +10,9 @@ use Illuminate\Support\Facades\Redirect;
 class CoreController extends Controller
 {
     public function generateUrl(Request $request,$platform){
-        return CoreService::setChannel($platform)->generateUrl($request->all());
+        $payload=$request->all();
+        CoreHelper::setIpState($payload);
+        return CoreService::setChannel($platform)->generateUrl($payload);
     }
 
     public function handleAuth(Request $request,$platform){

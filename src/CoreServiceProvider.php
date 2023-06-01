@@ -48,5 +48,6 @@ class CoreServiceProvider extends ServiceProvider
         $this->app->singleton(
             UserContract::class,
             AppCoreService::class);
+
     }
 }

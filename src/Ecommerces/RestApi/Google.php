@@ -1,11 +1,22 @@
 <?php
 
-namespace Devtvn\Social\Ecommerces\RestApi\Google;
+namespace Devtvn\Social\Ecommerces\RestApi;
 
 use Devtvn\Social\Helpers\CoreHelper;
 
-class Google extends BaseApi
+class Google extends Request implements IEcommerce
 {
+    public function __construct()
+    {
+        $this->endpoint=config('social.platform.google.base_api');
+        $this->version=config('social.platform.google.version');
+        $this->clientId=config('social.platform.google.client_id');
+        $this->secretId=config('social.platform.google.client_secret');
+        $this->redirect=config('social.platform.google.redirect_uri');
+        $this->scope=config('social.platform.google.scope');
+        parent::__construct();
+    }
+
     public function generateUrl(array $payload=[],$type='auth'){
         $payload['type']=$type;
         return "https://accounts.google.com/o/oauth2/$this->version/auth?".http_build_query([
@@ -13,11 +24,17 @@ class Google extends BaseApi
                 'redirect_uri'=>$this->redirect,
                 'state'=>CoreHelper::encodeState($payload),
                 'response_type'=>'code',
-                'scope'=>$this->implodeScope(),
+                'scope'=>$this->implodeScope(' '),
             ]);
     }
 
-    public function getToken(string $code){
+    public function auth(array $payload)
+    {
+        // TODO: Implement auth() method.
+    }
+
+    public function getAccessToken(string $code)
+    {
         $body = [
             'code' => $code,
             'client_id' => $this->clientId,
@@ -30,10 +47,14 @@ class Google extends BaseApi
         ],$body);
     }
 
+    public function refreshToken()
+    {
+        // TODO: Implement refreshToken() method.
+    }
 
-    public function getProfile(){
+    public function profile()
+    {
         $url="https://www.$this->endpoint/oauth2/$this->version/userinfo?alt=json&access_token=".$this->token;
         return $this->getRequest($url);
-
     }
 }

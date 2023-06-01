@@ -31,7 +31,7 @@ protected $middlewareGroups = [
 
         'api' => [
            ...
-            Devtvn\Social\Http\Middleware\GlobalJwtMiddleware::class
+            \Devtvn\Social\Http\Middleware\GlobalJwtMiddleware::class
         ],
     ];
 ```

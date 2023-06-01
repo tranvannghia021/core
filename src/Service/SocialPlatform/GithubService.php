@@ -2,7 +2,8 @@
 
 namespace Devtvn\Social\Service\SocialPlatform;
 
-use Devtvn\Social\Ecommerces\RestApi\Github\Github;
+
+use Devtvn\Social\Facades\Social;
 use Devtvn\Social\Helpers\CoreHelper;
 use Devtvn\Social\Helpers\EnumChannel;
 use Devtvn\Social\Repositories\UserRepository;
@@ -14,9 +15,9 @@ class GithubService implements ICoreService
 {
     use Response;
     protected $github,$userRepository;
-    public function __construct(Github $github)
+    public function __construct()
     {
-        $this->github=$github;
+        $this->github=Social::driver(EnumChannel::GITHUB);
         $this->userRepository=app(UserRepository::class);
     }
 
@@ -27,11 +28,6 @@ class GithubService implements ICoreService
 
     public function generateUrl(array $payload)
     {
-        $result=CoreHelper::ip();
-        $payload['ip']=request()->ip();
-        if($result['status']){
-            $payload['ip']=$result['ip'];
-        }
         return $this->Response([
             'url'=>$this->github->generateUrl($payload),
             'pusher'=>[
@@ -43,7 +39,7 @@ class GithubService implements ICoreService
 
     public function auth(array $payload)
     {
-        $token=$this->github->getToken($payload['code']);
+        $token=$this->github->getAccessToken($payload['code']);
         if(!$token['status']){
             CoreHelper::pusher($payload['ip'],[
                 'status'=>false,
@@ -56,7 +52,7 @@ class GithubService implements ICoreService
             return;
         }
         if($payload['type'] == 'auth') {
-            $user = $this->github->setToken($token['data']['access_token'])->getProfile();
+            $user = $this->github->setToken($token['data']['access_token'])->profile();
             if (!$user['status']) {
                 CoreHelper::pusher($payload['ip'], [
                     'status' => false,
