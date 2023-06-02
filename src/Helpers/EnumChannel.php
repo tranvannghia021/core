@@ -8,6 +8,7 @@ class EnumChannel
     const TIKTOK ='tiktok';
     const TWITTER ='twitter';
     const INSTAGRAM_BASIC ='instagram';
+    const LINKEDIN ='linkedin';
     const PLATFROM = [
         self::FACEBOOK,
         self::GITHUB,
@@ -15,5 +16,6 @@ class EnumChannel
         self::GOOGLE,
         self::TWITTER,
         self::INSTAGRAM_BASIC,
+        self::LINKEDIN,
     ];
 }

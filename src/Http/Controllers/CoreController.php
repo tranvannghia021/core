@@ -11,15 +11,16 @@ class CoreController extends Controller
 {
     public function generateUrl(Request $request,$platform){
         $payload=$request->all();
+        $payload['platform']=$platform;
         CoreHelper::setIpState($payload);
         return CoreService::setChannel($platform)->generateUrl($payload);
     }
 
-    public function handleAuth(Request $request,$platform){
+    public function handleAuth(Request $request){
         if(CoreHelper::handleErrorSocial($request)){
             return ['status'=>false,'error'=>'Auth failed'];
         }
-        CoreService::setChannel($platform)->auth($request->all());
+        CoreService::setChannel($request->input('platform'))->auth($request->all());
         return Redirect::to(config('social.app.url_fe'));
     }
 }

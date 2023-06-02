@@ -5,6 +5,7 @@ use Devtvn\Social\Service\SocialPlatform\FacebookService;
 use Devtvn\Social\Service\SocialPlatform\GithubService;
 use Devtvn\Social\Service\SocialPlatform\GoogleService;
 use Devtvn\Social\Service\SocialPlatform\InstagramService;
+use Devtvn\Social\Service\SocialPlatform\LinkedinService;
 use Devtvn\Social\Service\SocialPlatform\TiktokService;
 use Devtvn\Social\Service\SocialPlatform\TwitterService;
 
@@ -31,6 +32,9 @@ class CoreService
                 break;
             case EnumChannel::INSTAGRAM_BASIC:
                 $service=app(InstagramService::class);
+                break;
+            case EnumChannel::LINKEDIN:
+                $service=app(LinkedinService::class);
                 break;
         }
         return $service->setVariable($variable);

@@ -27,13 +27,13 @@ class AppCoreService implements UserContract
             'platform'=>config('social.app.name')
         ]);
         if(empty($user)){
-            throw new \Exception(__('Devtvn.user'));
+            throw new \Exception(__('core.user'));
         }
         if(!$user['status']){
-            throw new \Exception(__('Devtvn.verify_email'));
+            throw new \Exception(__('core.verify_email'));
         }
         if(!Hash::check($payload['password'],$user['password'])){
-            throw new \Exception(__('Devtvn.incorrect'));
+            throw new \Exception(__('core.incorrect'));
         }
         unset($user['password'],$user['refresh_token'],$user['access_token']);
         return $this->Response(CoreHelper::createPayloadJwt($user),"Login success");
@@ -46,12 +46,12 @@ class AppCoreService implements UserContract
                 'email'=>$payload['email'],
                 'platform'=>config('social.app.name')
             ]);
-            if(!empty($result)) return $this->ResponseError(__('Devtvn.register.exists'));
+            if(!empty($result)) return $this->ResponseError(__('core.register.exists'));
             $payload['password'] = Hash::make($payload['confirm']);
             if (isset($payload['avatar'])) {
                 $avatar = CoreHelper::saveImgBase64('app', $payload['avatar']);
                 if ($avatar === false) {
-                    return $this->ResponseError(__('Devtvn.image_64', [
+                    return $this->ResponseError(__('core.image_64', [
                         'attribute' => 'avatar'
                     ]));
                 }
@@ -66,7 +66,7 @@ class AppCoreService implements UserContract
                 ->onConnection(config('social.queue.mail.on_connection'))
                 ->onQueue(config('social.queue.mail.on_queue'));
             unset($result['password']);
-            return $this->Response($result,__('Devtvn.register.success'));
+            return $this->Response($result,__('core.register.success'));
         }catch (\Exception $exception){
             throw $exception;
         }
@@ -81,7 +81,7 @@ class AppCoreService implements UserContract
                 'email_verified_at'=>now(),
             ]);
         }else{
-            throw new \Exception(__('Devtvn.user'));
+            throw new \Exception(__('core.user'));
         }
     }
 
@@ -92,12 +92,12 @@ class AppCoreService implements UserContract
             'status'=>$type !== 'verify'
         ],['id','email']);
         if(empty($result)){
-            throw new \Exception(__('Devtvn.user'));
+            throw new \Exception(__('core.user'));
         }
         VerifyEmailJob::dispatch($result,$type)
             ->onConnection(config('social.queue.mail.on_connection'))
             ->onQueue(config('social.queue.mail.on_queue'));
-        return $this->Response([],__('Devtvn.re_sent'));
+        return $this->Response([],__('core.re_sent'));
     }
 
 
@@ -116,10 +116,10 @@ class AppCoreService implements UserContract
     {
         $user=$this->userRepository->find($id);
         if(empty($user)){
-            throw new \Exception(__('Devtvn.user'));
+            throw new \Exception(__('core.user'));
         }
         $user->delete();
-        return $this->Response([],__('Devtvn.delete.success'));
+        return $this->Response([],__('core.delete.success'));
     }
 
     public function check()
@@ -134,26 +134,26 @@ class AppCoreService implements UserContract
                 $payload['access_token'],$payload['expire_token'],$payload['is_disconnect']);
         if(isset($payload['avatar'])){
                 $avatar=CoreHelper::saveImgBase64('app',$payload['avatar']);
-                if($avatar === false) throw new \Exception(__('Devtvn.image_64'));
+                if($avatar === false) throw new \Exception(__('core.image_64'));
                 $payload['avatar']=$avatar;
         }
        $this->userRepository->update(Core::user()['id'],$payload);
-       return $this->Response([],__('Devtvn.update.success'));
+       return $this->Response([],__('core.update.success'));
     }
 
     public function changePassword(int $id, string $passwordOld,string $password)
     {
        $user=$this->userRepository->find($id);
        if(empty($user)){
-           throw new \Exception(__('Devtvn.user'));
+           throw new \Exception(__('core.user'));
        }
        if(!Hash::check($passwordOld,$user['password'])){
-           throw new \Exception(__('Devtvn.password'));
+           throw new \Exception(__('core.password'));
        }
        $user->update([
            'password'=>Hash::make($password),
        ]);
-       return $this->Response([],__('Devtvn.reset'));
+       return $this->Response([],__('core.reset'));
 
     }
 
@@ -168,19 +168,19 @@ class AppCoreService implements UserContract
             'id','email'
         ]);
         if(empty($user)){
-            throw new \Exception(__('Devtvn.user'));
+            throw new \Exception(__('core.user'));
         }
         VerifyEmailJob::dispatch($user,'forgot')
             ->onConnection(config('social.queue.mail.on_connection'))
             ->onQueue(config('social.queue.mail.on_queue'));
-        return $this->Response([],__('Devtvn.re_sent'));
+        return $this->Response([],__('core.re_sent'));
     }
 
     public function verifyForgot(array $payload)
     {
        $user=$this->userRepository->find($payload['id']);
        if(empty($user)){
-           throw new \Exception(__('Devtvn.user'));
+           throw new \Exception(__('core.user'));
        }
        CoreHelper::pusher('forgot_'.$user['email'],[
            'id'=>$user['id'],

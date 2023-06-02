@@ -23,10 +23,10 @@ class RefreshMiddleware
         try {
             $data=CoreHelper::decodeJwt($token,true);
             $isExpire=CoreHelper::expireToken($data['expire']);
-            if($isExpire) throw new \Exception(__('Devtvn.verify'));
+            if($isExpire) throw new \Exception(__('core.verify'));
             $user=app(UserRepository::class)->find($data['id']);
             if(empty($user)){
-                throw new \Exception(__('Devtvn.user'));
+                throw new \Exception(__('core.user'));
             }
             Core::setUser($user->toArray());
             return $next($request);

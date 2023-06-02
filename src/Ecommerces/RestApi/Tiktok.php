@@ -19,12 +19,12 @@ class Tiktok extends Request implements IEcommerce
 
     public function generateUrl(array $payload=[],$type='auth'){
         $payload['type']=$type;
-        return "https://www.tiktok.com/$this->version/auth/authorize?".http_build_query([
+        return "https://www.tiktok.com/v2/auth/authorize/?".http_build_query([
                 'client_key'=>$this->clientId,
+                'response_type'=>'code',
                 'scope'=>$this->implodeScope(),
                 'redirect_uri'=>$this->redirect,
                 'state'=>CoreHelper::encodeState($payload),
-                'response_type'=>'code',
             ]);
     }
 

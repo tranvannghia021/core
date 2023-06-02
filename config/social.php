@@ -26,7 +26,7 @@ return [
     'platform' => [
         'facebook' => [
             'client_id' => env('FACEBOOK_CLIENT_ID'),
-            'redirect_uri' => env('APP_URL') . '/api/facebook/handle/auth',
+            'redirect_uri' => env('APP_URL') . '/api/handle/auth',
             'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
             'base_api' => env('FACEBOOK_BASE_API','https://graph.facebook.com'),
             'version' => env('FACEBOOK_VERSION','v16.0'),
@@ -49,7 +49,7 @@ return [
         ],
         'google' => [
             'client_id' => env('GOOGLE_CLIENT_ID','googleapis.com'),
-            'redirect_uri' => env('APP_URL') . '/api/google/handle/auth',
+            'redirect_uri' => env('APP_URL') . '/api/handle/auth',
             'client_secret' => env('GOOGLE_CLIENT_SECRET'),
             'base_api' => env('GOOGLE_BASE_API'),
             'version' => env('GOOGLE_VERSION','v2'),
@@ -67,7 +67,7 @@ return [
         'github' => [
             'app_id' => env('GITHUB_APP_ID'),
             'client_id' => env('GITHUB_CLIENT_ID'),
-            'redirect_uri' => env('APP_URL') . '/api/github/handle/auth',
+            'redirect_uri' => env('APP_URL') . '/api/handle/auth',
             'client_secret' => env('GITHUB_CLIENT_SECRET'),
             'base_api' => env('GITHUB_BASE_API','https://api.github.com'),
             'version' => env('GITHUB_VERSION','v1'),
@@ -78,14 +78,12 @@ return [
         'tiktok' => [
             'app_id' => env('TIKTOK_APP_ID'),
             'client_id' => env('TIKTOK_CLIENT_ID'),
-            'redirect_uri' => env('APP_URL') . '/api/tiktok/handle/auth',
+            'redirect_uri' => env('APP_URL') . '/api/handle/auth',
             'client_secret' => env('TIKTOK_CLIENT_SECRET'),
             'base_api' => env('TIKTOK_BASE_API','https://open.tiktokapis.com'),
             'version' => env('TIKTOK_VERSION','v2'),
             'scope' => [
                 'user.info.basic',
-                'user.info.profile',
-                'user.info.stats'
             ],
             'field'=>[
                 'open_id','union_id','avatar_url','display_name',
@@ -100,7 +98,7 @@ return [
         ],
         'twitter' => [
             'client_id' => env('TWITTER_CLIENT_ID'),
-            'redirect_uri' => env('APP_URL') . '/api/twitter/handle/auth',
+            'redirect_uri' => env('APP_URL') . '/api/handle/auth',
             'client_secret' => env('TWITTER_CLIENT_SECRET'),
             'base_api' => env('TWITTER_BASE_API','https://api.twitter.com'),
             'version' => env('TWITTER_VERSION','2'),
@@ -113,9 +111,7 @@ return [
         ],
         'instagram_basic' => [
             'client_id' => env('INSTAGRAM_CLIENT_ID'),
-            'consumer_key'=>env('INSTAGRAM_CONSUMER_KEY'),
-            'consumer_secret'=>env('INSTAGRAM_CONSUMER_SECRET'),
-            'redirect_uri' => env('APP_URL') . '/api/instagram/handle/auth',
+            'redirect_uri' => env('APP_URL') . '/api/handle/auth',
             'client_secret' => env('INSTAGRAM_CLIENT_SECRET'),
             'base_api' => env('INSTAGRAM_BASE_API','https://graph.instagram.com'),
             'scope' => [
@@ -123,6 +119,21 @@ return [
             ],
             'field'=>[
                 'id','username'
+            ]
+        ],
+        'linkedin' => [
+            'client_id' => env('LINKEDIN_CLIENT_ID'),
+            'redirect_uri' => env('APP_URL') . '/api/handle/auth',
+            'client_secret' => env('LINKEDIN_CLIENT_SECRET'),
+            'base_api' => env('LINKEDIN_BASE_API','https://api.linkedin.com'),
+            'version' => env('LINKEDIN_VERSION','v2'),
+            'scope' => [
+                'r_liteprofile',
+                'r_emailaddress',
+                'w_member_social'
+            ],
+            'field'=>[
+
             ]
         ],
     ],

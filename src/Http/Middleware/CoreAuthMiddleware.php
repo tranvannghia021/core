@@ -19,16 +19,17 @@ class CoreAuthMiddleware
     public function handle(Request $request, Closure $next)
     {
         $token=$request->header('Authorization');
+        if(is_null($token)) throw new Exception(__('core.required_token'));
         try {
             $data=CoreHelper::decodeJwt($token);
             $isExpire=CoreHelper::expireToken($data['expire']);
 
             if($isExpire){
-                throw new \Exception(__('Devtvn.expire'));
+                throw new \Exception(__('core.expire'));
             }
             return $next($request);
         }catch (Exception $exception){
-            throw new \Exception(__('Devtvn.jwt'));
+            throw new \Exception(__('core.jwt'));
         }
     }
 }

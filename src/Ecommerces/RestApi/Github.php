@@ -50,7 +50,12 @@ class Github extends Request implements IEcommerce
 
     public function refreshToken()
     {
-        // TODO: Implement refreshToken() method.
+        return $this->postRequest("https://github.com/login/oauth/access_token?".http_build_query([
+                'client_id'=>$this->clientId,
+                'client_secret'=>$this->secretId,
+                'grant_type'=>'refresh_token',
+                'refresh_token'=>$this->refresh
+            ]));
     }
 
     public function profile()

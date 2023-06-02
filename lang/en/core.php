@@ -147,6 +147,7 @@ return [
     'uuid' => 'The :attribute must be a valid UUID.',
     'verify_email' => 'Please,Verify your email and try login again.',
     'jwt'=>'Signature verification failed',
+    'required_token'=>'Token is require',
 
     /*
     |--------------------------------------------------------------------------

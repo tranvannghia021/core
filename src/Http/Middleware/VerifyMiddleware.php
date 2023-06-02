@@ -29,7 +29,7 @@ class VerifyMiddleware
                 $isExpire=true;
             }
             if($isExpire){
-                throw new \Exception(__('Devtvn.verify'));
+                throw new \Exception(__('core.verify'));
             }
             $request->merge($result);
             return $next($request);

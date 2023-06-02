@@ -28,6 +28,9 @@ class Ecommerces
             case EnumChannel::INSTAGRAM_BASIC;
                 $ec = app(Instagram::class);
                 break;
+            case EnumChannel::LINKEDIN;
+                $ec = app(Linkedin::class);
+                break;
             default:
 
         }

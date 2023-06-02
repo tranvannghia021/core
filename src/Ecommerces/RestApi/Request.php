@@ -18,7 +18,7 @@ class Request
     }
 
 
-    public function setRefresh(string $refresh): Request
+    public function setRefresh(string $refresh) : Request
     {
         $this->refresh=$refresh;
         return $this;
@@ -87,6 +87,7 @@ class Request
                     'headers' => $header,
                     'body' => json_encode($data)
                 ]);
+            dd($response->getBody()->getContents());
             return ['status' => true, 'code' => $response->getStatusCode(), 'data' => json_decode($response->getBody()->getContents(), true)];
         } catch (GuzzleException $exception) {
             return $this->handleRequestError($exception);

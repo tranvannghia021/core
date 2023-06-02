@@ -36,7 +36,8 @@ class TiktokService implements ICoreService
 
     public function auth(array $payload)
     {
-//        $token = $this->getAccessToken($payload['code']);
+        $token = $this->tiktok->getAccessToken($payload['code']);
+        dd($token);
 //        if (!$token['status']) {
 //            CoreHelper::pusher($payload['ip'], [
 //                'status' => false,
