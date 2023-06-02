@@ -4,7 +4,10 @@
 ## feature
 - facebook
 - google
-- tiktok
+- tiktok(maintenance)
+- instagram
+- twitter
+- github
 
 ## Official Core SDKs
 <div>
