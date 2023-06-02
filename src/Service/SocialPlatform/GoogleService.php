@@ -64,7 +64,7 @@ class GoogleService implements ICoreService
 
             $data=[
                 'internal_id'=>(string)$user['data']['id'],
-                'email_verified_at'=>$user['data']['verified_email'] ? now() : null,
+                'email_verified_at'=>$user['data']['verified_email'] ?? now(),
                 'first_name'=>@$user['data']['name'] ?? $user['data']['given_name'],
                 'last_name'=>'',
                 'email'=>$user['data']['email'],

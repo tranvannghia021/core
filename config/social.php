@@ -130,11 +130,31 @@ return [
             'scope' => [
                 'r_liteprofile',
                 'r_emailaddress',
-                'w_member_social'
             ],
-            'field'=>[
 
-            ]
+        ],
+        'bitbucket' => [
+            'client_id' => env('BITBUCKET_CLIENT_ID'),
+            'redirect_uri' => env('APP_URL') . '/api/handle/auth',
+            'client_secret' => env('BITBUCKET_CLIENT_SECRET'),
+            'base_api' => env('BITBUCKET_BASE_API','https://api.bitbucket.org'),
+            'version' => env('BITBUCKET_VERSION','2.0'),
+            'scope' => [
+                'email',
+            ],
+
+        ],
+        'gitlab' => [
+            'app_id' => env('GITLAB_APP_ID'),
+            'client_id' => env('GITLAB_CLIENT_ID'),
+            'redirect_uri' => env('APP_URL') . '/api/handle/auth',
+            'client_secret' => env('GITLAB_CLIENT_SECRET'),
+            'base_api' => env('GITLAB_BASE_API','https://gitlab.com'),
+            'version' => env('GITLAB_VERSION','v4'),
+            'scope' => [
+                'read_user'
+            ],
+
         ],
     ],
     'pusher' => [

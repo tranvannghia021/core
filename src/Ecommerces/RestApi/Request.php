@@ -79,15 +79,15 @@ class Request
      * @param array $data
      * @return array
      */
-    public function postRequest(string $url, array $header = [], array $data = []): array
+    public function postRequest(string $url, array $header = [], array $data = [],array $auth = []): array
     {
         try {
             $response = $this->_client->request('POST', "$url",
                 [
                     'headers' => $header,
-                    'body' => json_encode($data)
+                    'body' => json_encode($data),
+                    'auth'=>$auth
                 ]);
-            dd($response->getBody()->getContents());
             return ['status' => true, 'code' => $response->getStatusCode(), 'data' => json_decode($response->getBody()->getContents(), true)];
         } catch (GuzzleException $exception) {
             return $this->handleRequestError($exception);

@@ -2,13 +2,15 @@
 <p style="align-items: center; margin:5px auto;display: flex;justify-content: center">Social authentication multiple-platform and management users</p>
 
 ## feature
-- facebook
-- google
-- tiktok(maintenance)
-- instagram
-- twitter
-- github
-
+- Facebook
+- Google
+- Tiktok(maintenance)
+- Instagram
+- Twitter
+- Github
+- Linkedin
+- Bitbucket
+- GitLab
 ## Official Core SDKs
 <div>
 <ul>

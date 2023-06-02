@@ -1,8 +1,10 @@
 <?php
 namespace Devtvn\Social\Service;
 use Devtvn\Social\Helpers\EnumChannel;
+use Devtvn\Social\Service\SocialPlatform\BitbucketService;
 use Devtvn\Social\Service\SocialPlatform\FacebookService;
 use Devtvn\Social\Service\SocialPlatform\GithubService;
+use Devtvn\Social\Service\SocialPlatform\GitLabService;
 use Devtvn\Social\Service\SocialPlatform\GoogleService;
 use Devtvn\Social\Service\SocialPlatform\InstagramService;
 use Devtvn\Social\Service\SocialPlatform\LinkedinService;
@@ -35,6 +37,12 @@ class CoreService
                 break;
             case EnumChannel::LINKEDIN:
                 $service=app(LinkedinService::class);
+                break;
+            case EnumChannel::BITBUCKET:
+                $service=app(BitbucketService::class);
+                break;
+            case EnumChannel::GITLAB:
+                $service=app(GitLabService::class);
                 break;
         }
         return $service->setVariable($variable);

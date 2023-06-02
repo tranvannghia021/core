@@ -9,6 +9,8 @@ class EnumChannel
     const TWITTER ='twitter';
     const INSTAGRAM_BASIC ='instagram';
     const LINKEDIN ='linkedin';
+    const BITBUCKET ='bitbucket';
+    const GITLAB ='gitlab';
     const PLATFROM = [
         self::FACEBOOK,
         self::GITHUB,
@@ -17,5 +19,7 @@ class EnumChannel
         self::TWITTER,
         self::INSTAGRAM_BASIC,
         self::LINKEDIN,
+        self::BITBUCKET,
+        self::GITLAB,
     ];
 }

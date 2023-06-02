@@ -31,6 +31,12 @@ class Ecommerces
             case EnumChannel::LINKEDIN;
                 $ec = app(Linkedin::class);
                 break;
+            case EnumChannel::BITBUCKET;
+                $ec = app(Bitbucket::class);
+                break;
+            case EnumChannel::GITLAB;
+                $ec = app(Gitlab::class);
+                break;
             default:
 
         }

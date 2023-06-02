@@ -52,6 +52,7 @@ class LinkedinService implements ICoreService
         }
         if ($payload['type'] === 'auth') {
             $user = $this->linkedin->setToken($token['data']['access_token'])->profile();
+            $email=$this->linkedin->setToken($token['data']['access_token'])->email();
             if (!$user['status']) {
                 CoreHelper::pusher($payload['ip'], [
                     'status' => false,
@@ -64,10 +65,10 @@ class LinkedinService implements ICoreService
             }
             $data = [
                 'internal_id' => (string)$user['data']['id'],
-                'email_verified_at' => @$user['data']['verified_email'] ? now() : null,
+                'email_verified_at' => @$user['data']['verified_email'] ?? now(),
                 'first_name' => @$user['data']['localizedFirstName'] ?? @$user['data']['localizedLastName'],
                 'last_name' => '',
-                'email' => @$user['data']['email'],
+                'email' => @$email['data']['elements'][0]['handle~']['emailAddress'],
                 'avatar' => @$user['data']['picture'],
                 'password' => Hash::make(123456789),
                 'platform' => EnumChannel::LINKEDIN,
@@ -80,6 +81,7 @@ class LinkedinService implements ICoreService
             ];
             $result = app(UserRepository::class)->updateOrInsert([
                 'internal_id' => $data['internal_id'],
+                'email'=>$data['email'],
                 'platform' => $data['platform'],
             ], $data);
             $data['id'] = $result['id'];
