@@ -3,8 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use \Devtvn\Social\Models\User;
-class CreateUsersTable extends Migration
+use \Devtvn\Social\Models\Core;
+class CreateCoreTable extends Migration
 {
     protected $schema;
     public function __construct()
@@ -18,7 +18,7 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        $this->schema->create('users', function (Blueprint $table) {
+        $this->schema->create(config('social.models.table.name'), function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('internal_id')->nullable();
             $table->string('platform')->default(config('social.app.name'));
@@ -38,8 +38,8 @@ class CreateUsersTable extends Migration
             $table->dateTime('expire_token')->nullable();
             $table->boolean('is_disconnect')->default(false);
             $table->jsonb('settings')->nullable();
-           if(count(@User::$customsFill) > 0){
-               foreach (User::$customsFill  as $value){
+           if(count(@app(Core::class)->customsFill) > 0){
+               foreach (app(Core::class)->customsFill  as $value){
                     $table->{$value['type']}($value['column'])->{@$value['define'] ?? 'nullable'}();
                }
            }
@@ -54,6 +54,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        $this->schema->dropIfExists('users');
+        $this->schema->dropIfExists(config('social.models.table.name'));
     }
 }

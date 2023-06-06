@@ -2,48 +2,26 @@
 
 namespace Devtvn\Social\Ecommerces\RestApi;
 
+use Devtvn\Social\Ecommerces\AEcommerce;
 use Devtvn\Social\Helpers\CoreHelper;
+use Devtvn\Social\Helpers\EnumChannel;
 
-class Linkedin extends Request implements IEcommerce
+class Linkedin extends AEcommerce
 {
+    protected $parameters = [];
+    protected $separator = ' ';
+
     public function __construct()
     {
-        $this->endpoint = config('social.platform.linkedin.base_api');
-        $this->version = config('social.platform.linkedin.version');
-        $this->clientId = config('social.platform.linkedin.client_id');
-        $this->secretId = config('social.platform.linkedin.client_secret');
-        $this->redirect = config('social.platform.linkedin.redirect_uri');
-        $this->scope = config('social.platform.linkedin.scope');
+        $this->platform = EnumChannel::LINKEDIN;
         parent::__construct();
     }
 
-    public function generateUrl(array $payload, string $type = 'auth')
-    {
-        $payload['type'] = $type;
-        return "https://www.linkedin.com/oauth/$this->version/authorization?" . http_build_query([
-                'response_type' => 'code',
-                'client_id' => $this->clientId,
-                'redirect_uri' => $this->redirect,
-                'state' => CoreHelper::encodeState($payload),
-                'scope' => $this->implodeScope(' ')
-            ]);
-    }
-
-    public function auth(array $payload)
-    {
-        // TODO: Implement auth() method.
-    }
 
     public function getAccessToken(string $code)
     {
         return $this->postRequestFormParams("https://www.linkedin.com/oauth/$this->version/accessToken?" . http_build_query(
-                [
-                    'grant_type' => 'authorization_code',
-                    'code' => $code,
-                    'client_id' => $this->clientId,
-                    'client_secret' => $this->secretId,
-                    'redirect_uri' => $this->redirect,
-                ]
+                $this->buildPayloadToken($code)
             ), [
             'Content-Type' => 'application/x-www-form-urlencoded'
         ]);
@@ -68,9 +46,14 @@ class Linkedin extends Request implements IEcommerce
         return $this->getRequest("$this->endpoint/$this->version/emailAddress?" . http_build_query([
                 'q' => 'members',
                 'projection' => '(elements*(handle~))'
-            ]),[
-                'Authorization'=>'Bearer '.$this->token
+            ]), [
+            'Authorization' => 'Bearer ' . $this->token
         ]);
+    }
+
+    public function getUrlAuth()
+    {
+        return "https://www.linkedin.com/oauth/$this->version/authorization";
     }
 
 }

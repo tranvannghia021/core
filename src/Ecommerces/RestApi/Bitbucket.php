@@ -2,59 +2,36 @@
 
 namespace Devtvn\Social\Ecommerces\RestApi;
 
-use Devtvn\Social\Helpers\CoreHelper;
+use Devtvn\Social\Ecommerces\AEcommerce;
+use Devtvn\Social\Helpers\EnumChannel;
 
-class Bitbucket extends Request implements IEcommerce
+class Bitbucket extends AEcommerce
 {
+    protected $urlAuth = 'https://bitbucket.org/site/oauth2/authorize';
+    protected $urlToken = 'https://bitbucket.org/site/oauth2/access_token';
+    protected $parameters = [];
+    protected $separator = ',';
+
     public function __construct()
     {
-        $this->endpoint = config('social.platform.bitbucket.base_api');
-        $this->version = config('social.platform.bitbucket.version');
-        $this->clientId = config('social.platform.bitbucket.client_id');
-        $this->secretId = config('social.platform.bitbucket.client_secret');
-        $this->redirect = config('social.platform.bitbucket.redirect_uri');
-        $this->scope = config('social.platform.bitbucket.scope');
+        $this->platform = EnumChannel::BITBUCKET;
         parent::__construct();
-    }
-
-    public function generateUrl(array $payload, string $type = 'auth')
-    {
-        $payload['type'] = $type;
-        return "https://bitbucket.org/site/oauth2/authorize?" . http_build_query([
-                'client_id' => $this->clientId,
-                'scope' => $this->implodeScope(),
-                'redirect_uri' => $this->redirect,
-                'state' => CoreHelper::encodeState($payload),
-                'response_type' => 'code',
-            ], '', '&', PHP_QUERY_RFC1738);
-    }
-
-    public function auth(array $payload)
-    {
-        // TODO: Implement auth() method.
     }
 
     public function getAccessToken(string $code)
     {
-        return $this->postRequestFormParams("https://bitbucket.org/site/oauth2/access_token", [
+        return $this->postRequestFormParams($this->getUrlToken(), [
             'Content-Type' => 'application/x-www-form-urlencoded',
             'Authorization' => 'Basic ' . base64_encode($this->clientId . ':' . $this->secretId)
-        ], [
-            'grant_type' => 'authorization_code',
-            'code' => $code,
-            'redirect_uri' => $this->redirect
-        ]);
+        ], $this->buildPayloadToken($code));
     }
 
     public function refreshToken()
     {
-        return $this->postRequestFormParams("https://bitbucket.org/site/oauth2/access_token", [
+        return $this->postRequestFormParams($this->getUrlToken(), [
             'Content-Type' => 'application/x-www-form-urlencoded',
             'Authorization' => 'Basic ' . base64_encode($this->clientId . ':' . $this->secretId)
-        ], [
-            'grant_type' => 'refresh_token',
-            'refresh_token' => $this->refresh,
-        ]);
+        ], $this->buildPayloadRefresh());
     }
 
     public function profile()
@@ -70,4 +47,5 @@ class Bitbucket extends Request implements IEcommerce
                 'access_token' => $this->token
             ]));
     }
+
 }

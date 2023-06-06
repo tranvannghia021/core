@@ -8,24 +8,18 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class Core extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+    public $customsFill= [];
     public function __construct(array $attributes = [])
     {
         $this->setConnection(config('social.db_connection'));
-        $this->setTable('users');
+        $this->setTable(config('social.models.table.name'));
+        $this->customsFill=(array)config('social.models.table.customs');
         self::addColumnCustom();
         parent::__construct($attributes);
     }
-    public static $customsFill=[
-        [
-            'type'=>'jsonb',
-            'column'=>'other',
-            'define'=>'nullable'
-        ]
-    ];
-
     /**
      * The attributes that are mass assignable.
      *
@@ -52,7 +46,7 @@ class User extends Authenticatable
         'settings',
     ];
     private function addColumnCustom(){
-        foreach (self::$customsFill as $value){
+        foreach ($this->customsFill as $value){
             $this->fillable[]=$value['column'];
         }
     }

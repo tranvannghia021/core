@@ -7,92 +7,46 @@ use Devtvn\Social\Facades\Social;
 use Devtvn\Social\Helpers\CoreHelper;
 use Devtvn\Social\Helpers\EnumChannel;
 use Devtvn\Social\Repositories\UserRepository;
+use Devtvn\Social\Service\ACoreService;
 use Devtvn\Social\Service\ICoreService;
 use Devtvn\Social\Traits\Response;
 use Illuminate\Support\Facades\Hash;
 
-class GithubService implements ICoreService
+class GithubService extends ACoreService
 {
     use Response;
-    protected $github,$userRepository;
+
     public function __construct()
     {
-        $this->github=Social::driver(EnumChannel::GITHUB);
-        $this->userRepository=app(UserRepository::class);
+        $this->platform = Social::driver(EnumChannel::GITHUB);
+        parent::__construct();
+
     }
 
-    public function setVariable(array $variable):ICoreService
+    public function getStructure(...$payload)
     {
-        return $this;
+        [$token, $user] = $payload;
+        return [
+            'internal_id' => (string)$user['data']['id'],
+            'first_name' => $user['data']['name'],
+            'last_name' => @$user['data']['last_name'] ?? '',
+            'avatar' => $user['data']['avatar_url'],
+            'email' => @$user['data']['email'] ?? $user['data']['login'] . '@gmail.com',
+            'email_verified_at' => now(),
+            'platform' => EnumChannel::GITHUB,
+            'password' => Hash::make(123456789),
+            'status' => true,
+            'access_token' => @$token['data']['access_token'],
+            'refresh_token' => @$token['data']['refresh_token'],
+            'expire_token' => date("Y-m-d H:i:s", time() + @$token['data']['expires_in'] ?? 0),
+            'address' => @$user['data']['location'],
+            'created_at' => now(),
+            'updated_at' => now(),
+        ];
     }
 
-    public function generateUrl(array $payload)
+    public function handleAdditional(array $payload, ...$variable)
     {
-        return $this->Response([
-            'url'=>$this->github->generateUrl($payload),
-            'pusher'=>[
-                'channel'=>config('social.pusher.channel'),
-                'event'=>config('social.pusher.event').$payload['ip']
-            ]
-        ]);
-    }
-
-    public function auth(array $payload)
-    {
-        $token=$this->github->getAccessToken($payload['code']);
-        if(!$token['status']){
-            CoreHelper::pusher($payload['ip'],[
-                'status'=>false,
-                'error'=>[
-                    'type'=>'account_access_denied',
-                    'message'=>'Access denied!',
-                    'platform'=>'github'
-                ]
-            ]);
-            return;
-        }
-        if($payload['type'] == 'auth') {
-            $user = $this->github->setToken($token['data']['access_token'])->profile();
-            if (!$user['status']) {
-                CoreHelper::pusher($payload['ip'], [
-                    'status' => false,
-                    'error' => [
-                        'type' => 'account_access_denied',
-                        'message' => 'Access denied!',
-                        'platform' => 'github'
-                    ]
-                ]);
-                return;
-            }
-
-            $data = [
-                'internal_id' => (string)$user['data']['id'],
-                'first_name' => $user['data']['name'],
-                'last_name' => @$user['data']['last_name'] ?? '',
-                'avatar' => $user['data']['avatar_url'],
-                'email' => @$user['data']['email'] ?? $user['data']['login'] . '@gmail.com',
-                'email_verified_at' => now(),
-                'platform' => EnumChannel::GITHUB,
-                'password' => Hash::make(123456789),
-                'status' => true,
-                'access_token'=>@$token['data']['access_token'],
-                'refresh_token'=>@$token['data']['refresh_token'],
-                'expire_token'=>date("Y-m-d H:i:s",time() + @$token['data']['expires_in'] ?? 0),
-                'address'=>@$user['data']['location'],
-                'created_at'=>now(),
-                'updated_at'=>now(),
-            ];
-
-
-            $result = $this->userRepository->updateOrInsert([
-                'internal_id' => $data['internal_id'],
-                'email' => $data['email'],
-                'platform' => $data['platform'],
-            ], $data);
-            unset($data['password'],$data['access_token'],$data['refresh_token']);
-            $data['id'] = $result['id'];
-
-            CoreHelper::pusher($payload['ip'], CoreHelper::createPayloadJwt($data));
-        }
+        // TODO: Implement handleAdditional() method.
     }
 }

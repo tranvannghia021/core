@@ -2,18 +2,20 @@
 namespace Devtvn\Social\Service;
 use Devtvn\Social\Helpers\EnumChannel;
 use Devtvn\Social\Service\SocialPlatform\BitbucketService;
+use Devtvn\Social\Service\SocialPlatform\DropboxService;
 use Devtvn\Social\Service\SocialPlatform\FacebookService;
 use Devtvn\Social\Service\SocialPlatform\GithubService;
 use Devtvn\Social\Service\SocialPlatform\GitLabService;
 use Devtvn\Social\Service\SocialPlatform\GoogleService;
 use Devtvn\Social\Service\SocialPlatform\InstagramService;
 use Devtvn\Social\Service\SocialPlatform\LinkedinService;
+use Devtvn\Social\Service\SocialPlatform\MicrosoftService;
 use Devtvn\Social\Service\SocialPlatform\TiktokService;
 use Devtvn\Social\Service\SocialPlatform\TwitterService;
 
 class CoreService
 {
-    public static function setChannel(string $channel,array $variable = []):?ICoreService
+    public static function setChannel(string $channel,array $variable = []):?ACoreService
     {
         $service=null;
         switch ($channel){
@@ -43,6 +45,12 @@ class CoreService
                 break;
             case EnumChannel::GITLAB:
                 $service=app(GitLabService::class);
+                break;
+            case EnumChannel::MICROSOFT:
+                $service=app(MicrosoftService::class);
+                break;
+            case EnumChannel::DROPBOX:
+                $service=app(DropboxService::class);
                 break;
         }
         return $service->setVariable($variable);

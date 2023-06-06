@@ -8,7 +8,7 @@ use Devtvn\Social\Http\Requests\AppCore\ChangeRequest;
 use Devtvn\Social\Http\Requests\AppCore\LoginRequest;
 use Devtvn\Social\Http\Requests\AppCore\RegisterRequest;
 use Devtvn\Social\Http\Requests\AppCore\ResetRequest;
-use Devtvn\Social\Service\Contracts\UserContract;
+use Devtvn\Social\Service\Contracts\CoreContract;
 use Devtvn\Social\Traits\Response;
 use Illuminate\Http\Request;
 
@@ -18,7 +18,7 @@ class AppController extends Controller
 
     protected $appCoreService;
 
-    public function __construct(UserContract $appCoreService)
+    public function __construct(CoreContract $appCoreService)
     {
         $this->appCoreService = $appCoreService;
     }

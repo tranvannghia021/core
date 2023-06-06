@@ -1,6 +1,6 @@
 <?php
 namespace Devtvn\Social\Service\Contracts;
-interface UserContract
+interface CoreContract
 {
     public function login(array $payload);
 

@@ -1,92 +1,48 @@
 <?php
+
 namespace Devtvn\Social\Service\SocialPlatform;
+
 use Devtvn\Social\Facades\Social;
 use Devtvn\Social\Helpers\CoreHelper;
 use Devtvn\Social\Helpers\EnumChannel;
 use Devtvn\Social\Repositories\UserRepository;
+use Devtvn\Social\Service\ACoreService;
 use Devtvn\Social\Service\ICoreService;
 use Devtvn\Social\Traits\Response;
 use Illuminate\Support\Facades\Hash;
 
-class FacebookService implements ICoreService
+class FacebookService extends ACoreService
 {
     use Response;
-    protected $facebookApi,$userRepository;
+
     public function __construct()
     {
-        $this->facebookApi=Social::driver(EnumChannel::FACEBOOK);
-        $this->userRepository=app(UserRepository::class);
+        $this->platform = Social::driver(EnumChannel::FACEBOOK);
+        parent::__construct();
     }
 
-    public function setVariable(array $variable) :ICoreService
+    public function getStructure(...$payload)
     {
-        return $this;
+        [$token, $user] = $payload;
+        return [
+            'internal_id' => (string)$user['data']['id'],
+            'first_name' => $user['data']['first_name'],
+            'last_name' => $user['data']['last_name'],
+            'email' => $user['data']['email'],
+            'email_verified_at' => now(),
+            'platform' => EnumChannel::FACEBOOK,
+            'avatar' => @$user['data']['picture']['data']['url'],
+            'password' => Hash::make(123456789),
+            'status' => true,
+            'access_token' => @$token['data']['access_token'],
+            'expire_token' => date("Y-m-d H:i:s", time() + @$token['data']['expires_in'] ?? 0),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ];
     }
 
-    public function generateUrl(array $payload)
+    public function handleAdditional(array $payload, ...$variable)
     {
-        return $this->Response([
-            'url'=>$this->facebookApi->generateUrl($payload),
-                'pusher'=>[
-                    'channel'=>config('social.pusher.channel'),
-                    'event'=>config('social.pusher.event').$payload['ip']
-                ]
-        ]);
-    }
 
-    public function auth(array $payload)
-    {
-        try {
-            $token=$this->facebookApi->getAccessToken($payload['code']);
-            if(!$token['status']){
-                CoreHelper::pusher($payload['ip'],[
-                    'status'=>false,
-                    'message'=>'Access denied!'
-                ]);
-                return;
-            }
-            if($payload['type'] == 'auth'){
-                $user=$this->facebookApi->setToken($token['data']['access_token'])->profile();
-                if(!$user['status']){
-                    CoreHelper::pusher($payload['ip'],[
-                        'status'=>false,
-                        'error'=>[
-                            'type'=>'account_access_denied',
-                            'message'=>'Access denied!',
-                        ]
-                    ]);
-                    return;
-                }
-
-
-                $data=[
-                    'internal_id'=>(string)$user['data']['id'],
-                    'first_name'=>$user['data']['first_name'],
-                    'last_name'=>$user['data']['last_name'],
-                    'email'=>$user['data']['email'],
-                    'email_verified_at'=>now(),
-                    'platform'=>EnumChannel::FACEBOOK,
-                    'avatar'=>@$user['data']['picture']['data']['url'],
-                    'password'=>Hash::make(123456789),
-                    'status'=>true,
-                    'access_token'=>@$token['data']['access_token'],
-                    'expire_token'=>date("Y-m-d H:i:s",time() + @$token['data']['expires_in'] ?? 0),
-                    'created_at'=>now(),
-                    'updated_at'=>now(),
-                ];
-
-                $result=$this->userRepository->updateOrInsert([
-                    'internal_id'=>$data['internal_id'],
-                    'email'=>$data['email'],
-                    'platform'=>$data['platform'],
-                ],$data);
-                $data['id']=$result['id'];
-                unset($data['password'],$data['access_token']);
-
-                CoreHelper::pusher($payload['ip'],CoreHelper::createPayloadJwt($data));
-            }
-        }catch (\Exception $exception){
-            return $this->ResponseError($exception->getMessage());
-        }
     }
 }

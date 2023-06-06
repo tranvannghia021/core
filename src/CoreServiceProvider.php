@@ -8,7 +8,7 @@ use Devtvn\Social\Http\Middleware\RefreshMiddleware;
 use Devtvn\Social\Http\Middleware\SocialAuthMiddleware;
 use Devtvn\Social\Http\Middleware\VerifyMiddleware;
 use Devtvn\Social\Service\AppCoreService;
-use Devtvn\Social\Service\Contracts\UserContract;
+use Devtvn\Social\Service\Contracts\CoreContract;
 use Illuminate\Support\ServiceProvider;
 
 
@@ -46,7 +46,7 @@ class CoreServiceProvider extends ServiceProvider
             require_once($file);
         }
         $this->app->singleton(
-            UserContract::class,
+            CoreContract::class,
             AppCoreService::class);
 
     }

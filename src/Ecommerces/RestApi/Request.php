@@ -13,22 +13,6 @@ class Request
         $this->_client = new Client();
     }
 
-    protected function implodeScope($separator = ','){
-        return implode($separator,$this->scope);
-    }
-
-
-    public function setRefresh(string $refresh) : Request
-    {
-        $this->refresh=$refresh;
-        return $this;
-    }
-
-    public function setToken(string $token): Request
-    {
-        $this->token=$token;
-        return $this;
-    }
 
     /**
      * @param string $url

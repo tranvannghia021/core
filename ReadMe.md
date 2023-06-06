@@ -11,6 +11,8 @@
 - Linkedin
 - Bitbucket
 - GitLab
+- Microsoft
+- Dropbox
 ## Official Core SDKs
 <div>
 <ul>
@@ -66,18 +68,13 @@ protected $middlewareGroups = [
     ...
 ]
 ```
-- If you want customs model users then add config behind
+- If you want customs model core then add config behind
 ```php
-use Devtvn\Social\Models\User as ModelsUse;
-class User extends ModelsUser
+use Devtvn\Social\Models\Core;
+class User extends Core
 {  
 }
 
-```
-- And remove file user migration 
-
-```php
-xxxx_xx_xx_xxxxxx_create_users_table.php
 ```
 ## After setup config completed :
 - Run command in terminal:

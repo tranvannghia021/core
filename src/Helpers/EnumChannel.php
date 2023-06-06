@@ -11,15 +11,19 @@ class EnumChannel
     const LINKEDIN ='linkedin';
     const BITBUCKET ='bitbucket';
     const GITLAB ='gitlab';
+    const MICROSOFT ='microsoft';
+    const DROPBOX ='dropbox';
     const PLATFROM = [
         self::FACEBOOK,
         self::GITHUB,
-        self::TIKTOK,
+        self::TIKTOK,// fix
         self::GOOGLE,
         self::TWITTER,
         self::INSTAGRAM_BASIC,
         self::LINKEDIN,
         self::BITBUCKET,
         self::GITLAB,
+        self::MICROSOFT,
+        self::DROPBOX,
     ];
 }

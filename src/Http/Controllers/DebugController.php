@@ -4,7 +4,6 @@ namespace Devtvn\Social\Http\Controllers;
 
 use Devtvn\Social\Facades\Core;
 use Devtvn\Social\Helpers\CoreHelper;
-use Devtvn\Social\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;

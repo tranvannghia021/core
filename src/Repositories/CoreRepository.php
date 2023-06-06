@@ -2,13 +2,13 @@
 
 namespace Devtvn\Social\Repositories;
 
-use Devtvn\Social\Models\User;
+use Devtvn\Social\Models\Core;
 
-class UserRepository extends BaseRepository
+class CoreRepository extends BaseRepository
 {
-    public function __construct(User $user)
+    public function __construct(Core $core)
     {
-        parent::__construct($user);
+        parent::__construct($core);
     }
 
     /**
