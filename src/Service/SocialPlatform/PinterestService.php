@@ -3,39 +3,32 @@
 namespace Devtvn\Social\Service\SocialPlatform;
 
 use Devtvn\Social\Facades\Social;
-use Devtvn\Social\Helpers\CoreHelper;
 use Devtvn\Social\Helpers\EnumChannel;
-use Devtvn\Social\Repositories\UserRepository;
 use Devtvn\Social\Service\ACoreService;
-use Devtvn\Social\Service\ICoreService;
 use Devtvn\Social\Traits\Response;
 use Illuminate\Support\Facades\Hash;
 
-class TwitterService extends ACoreService
+class PinterestService extends ACoreService
 {
+
     use Response;
-
-
     public function __construct()
     {
-        $this->platform = Social::driver(EnumChannel::TWITTER);
-        $this->usesPKCE=true;
+        $this->platform=Social::driver(EnumChannel::PINTEREST);
         parent::__construct();
     }
-
-
     public function getStructure(...$payload)
     {
-        [$token,$user]=$payload;
-       return[
+       [$token,$user]=$payload;
+       return [
            'internal_id' => (string)$user['data']['id'],
            'email_verified_at' => @$user['data']['verified_email'] ?? now(),
-           'first_name' => @$user['data']['name'] ?? @$user['data']['given_name'],
+           'first_name' => @$user['data']['localizedFirstName'] ?? @$user['data']['localizedLastName'],
            'last_name' => '',
-           'email' => @$user['data']['email'],
+           'email' => null,
            'avatar' => @$user['data']['picture'],
            'password' => Hash::make(123456789),
-           'platform' => EnumChannel::TWITTER,
+           'platform' => EnumChannel::LINKEDIN,
            'status' => true,
            'access_token' => @$token['data']['access_token'],
            'expire_token' => date("Y-m-d H:i:s",

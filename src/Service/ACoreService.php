@@ -36,6 +36,7 @@ abstract class ACoreService implements ICoreService
     public function auth(array $payload)
     {
         try {
+            $this->beforeInstall($payload);
             $this->code = $payload['code'];
             $token = $this->getToken($payload);
             if (!$token['status']) {
@@ -46,6 +47,7 @@ abstract class ACoreService implements ICoreService
                 return;
             }
             if ($payload['type'] === 'auth') {
+                $this->middleInstallBothTokenAndProfile($payload,$token);
                 $user = $this->platform->setToken($token['data']['access_token'])->profile();
                 $addition = $this->handleAdditional($payload, $token, $user);
                 if (!$user['status']) {
@@ -61,6 +63,7 @@ abstract class ACoreService implements ICoreService
 
 
                 $data = $this->getStructure($token, $user, $addition);
+                $this->afterInstall($data,$token,$payload,$addition);
                 $result = $this->userRepository->updateOrInsert([
                     'internal_id' => $data['internal_id'],
                     'email' => @$data['email'],
@@ -92,5 +95,4 @@ abstract class ACoreService implements ICoreService
         return $this->platform->getAccessToken($this->code);
     }
 
-    public abstract function handleAdditional(array $payload, ...$variable);
 }

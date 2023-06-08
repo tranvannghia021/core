@@ -14,7 +14,7 @@ interface CoreContract
 
     public function user();
 
-    public function setUser(array $user):UserContract;
+    public function setUser(array $user):CoreContract;
 
     public function check();
 

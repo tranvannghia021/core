@@ -13,6 +13,10 @@
 - GitLab
 - Microsoft
 - Dropbox
+- Reddit
+- Pinterest(maintenance)
+- Line(maintenance)
+- shopify
 ## Official Core SDKs
 <div>
 <ul>
@@ -84,6 +88,10 @@ php artisan vendor:publish --tag=core-social && php artisan migrate
 - Setup worker:
 ```bash
 php artisan queue:work {onconnection in file social.php} --queue={onqueue in file social.php} --sleep=3 --tries=3 --timeout=9000
+```
+- Setup redirect_uri in app developer :
+```bash
+  {host}/api/handle/auth 
 ```
 
 ## MIT

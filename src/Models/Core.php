@@ -44,6 +44,8 @@ class Core extends Authenticatable
         'expire_token',
         'is_disconnect',
         'settings',
+        'domain',
+        'raw_domain'
     ];
     private function addColumnCustom(){
         foreach ($this->customsFill as $value){

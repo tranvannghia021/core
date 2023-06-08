@@ -15,4 +15,11 @@ interface ICoreService
     public function getStructure(...$payload);
 
     public function handleAdditional(array $payload, ...$variable);
+
+    public function beforeInstall(...$payload);
+
+    public function middleInstallBothTokenAndProfile(...$payload);
+
+    public function afterInstall(...$payload);
+
 }

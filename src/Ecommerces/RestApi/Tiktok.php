@@ -8,7 +8,7 @@ use Devtvn\Social\Helpers\EnumChannel;
 
 class Tiktok extends AEcommerce
 {
-    protected $urlAuth='https://www.tiktok.com/v2/auth/authorize/';
+    protected $urlAuth='https://www.tiktok.com/v2/auth/authorize';
     protected $parameters = [];
     protected $separator = ',';
     public function __construct()
@@ -17,6 +17,23 @@ class Tiktok extends AEcommerce
         parent::__construct();
     }
 
+    public function getStructureAuth(string $state)
+    {
+        $fields = [
+            'client_key' => $this->clientId,
+            'scope' => $this->formatScope(),
+            'redirect_uri' => $this->redirect,
+            'response_type' => 'code',
+            'state' => $state,
+        ];
+
+        if ($this->usesPKCE()) {
+            $fields['code_challenge'] = $this->getCodeChallenge();
+            $fields['code_challenge_method'] = $this->getCodeChallengeMethod();
+        }
+
+        return array_merge($fields, $this->parameters ?? []);
+    }
 
     public function getAccessToken(string $code)
     {

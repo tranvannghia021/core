@@ -148,6 +148,7 @@ return [
     'verify_email' => 'Please,Verify your email and try login again.',
     'jwt'=>'Signature verification failed',
     'required_token'=>'Token is require',
+    'platform_not_support'=>"We don't have support for this platform yet",
 
     /*
     |--------------------------------------------------------------------------

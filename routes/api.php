@@ -5,7 +5,7 @@ Route::group(['prefix'=>'api','middleware'=>'global'],function(){
     Route::prefix('{platform}')->controller(CoreController::class)->group(function(){
         Route::post('generate-url', 'generateUrl');
     });
-    Route::get('handle/auth', [CoreController::class,'handleAuth'])->middleware('social.auth');
+    Route::get('handle/auth', [CoreController::class,'handleAuth'])->middleware(['social.auth','core.shopify']);
     
     Route::prefix('app')->controller(\Devtvn\Social\Http\Controllers\AppController::class)->group(function () {
         Route::post('login', 'login');

@@ -37,6 +37,8 @@ class CreateCoreTable extends Migration
             $table->text('access_token')->nullable();
             $table->dateTime('expire_token')->nullable();
             $table->boolean('is_disconnect')->default(false);
+            $table->string('domain')->nullable();
+            $table->string('raw_domain')->nullable();
             $table->jsonb('settings')->nullable();
            if(count(@app(Core::class)->customsFill) > 0){
                foreach (app(Core::class)->customsFill  as $value){

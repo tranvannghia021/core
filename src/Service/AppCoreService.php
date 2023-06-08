@@ -101,7 +101,7 @@ class AppCoreService implements CoreContract
     }
 
 
-    public function setUser(array $user) :UserContract
+    public function setUser(array $user) :CoreContract
     {
         $this->user=$user;
         return $this;

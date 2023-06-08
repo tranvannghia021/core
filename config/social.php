@@ -188,7 +188,48 @@ return [
                 'profile',
                 'email'
             ],
-
+        ],
+        'reddit' => [
+            'client_id' => env('REDDIT_CLIENT_ID'),
+            'redirect_uri' => env('APP_URL') . '/api/handle/auth',
+            'client_secret' => env('REDDIT_CLIENT_SECRET'),
+            'base_api' => env('REDDIT_BASE_API', 'https://oauth.reddit.com'),
+            'version' => env('REDDIT_VERSION', 'v1'),
+            'scope' => [
+               'account','identity'
+            ],
+        ],
+        'pinterest' => [
+            'app_id' => env('PINTEREST_APP_ID'),
+            'client_id' => env('PINTEREST_CLIENT_ID'),
+            'redirect_uri' => env('APP_URL') . '/api/handle/auth',
+            'client_secret' => env('PINTEREST_CLIENT_SECRET'),
+            'base_api' => env('PINTEREST_BASE_API', 'https://api.pinterest.com'),
+            'version' => env('PINTEREST_VERSION', 'v5'),
+            'scope' => [
+                'boards:read','pins:read','user_accounts:read'
+            ],
+        ],
+        'line' => [
+            'app_id' => env('LINE_APP_ID'),
+            'client_id' => env('LINE_CLIENT_ID'),
+            'redirect_uri' => env('APP_URL') . '/api/handle/auth',
+            'client_secret' => env('LINE_CLIENT_SECRET'),
+            'base_api' => env('LINE_BASE_API', 'https://api.line.me'),
+            'version' => env('LINE_VERSION', 'v2.1'),
+            'scope' => [
+                'profile','openid'
+            ],
+        ],
+        'shopify' => [
+            'app_id' => env('SHOPIFY_APP_ID'),
+            'client_id' => env('SHOPIFY_CLIENT_ID'),
+            'redirect_uri' => env('APP_URL') . '/api/handle/auth',
+            'client_secret' => env('SHOPIFY_CLIENT_SECRET'),
+            'version' => env('SHOPIFY_VERSION', 'v2.1'),
+            'scope' => [
+                'unauthenticated_read_product_listings'
+            ],
         ],
     ],
     'pusher' => [

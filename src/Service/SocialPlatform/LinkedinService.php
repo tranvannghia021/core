@@ -47,4 +47,19 @@ class LinkedinService extends ACoreService
         [$token] = $variable;
         return $this->platform->setToken($token['data']['access_token'])->email();
     }
+
+    public function beforeInstall(...$payload)
+    {
+        // TODO: Implement beforeInstall() method.
+    }
+
+    public function middleInstallBothTokenAndProfile(...$payload)
+    {
+        // TODO: Implement middleInstallBothTokenAndProfile() method.
+    }
+
+    public function afterInstall(...$payload)
+    {
+        // TODO: Implement afterInstall() method.
+    }
 }

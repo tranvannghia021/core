@@ -3,6 +3,7 @@
 namespace Devtvn\Social;
 
 use Devtvn\Social\Http\Middleware\CoreAuthMiddleware;
+use Devtvn\Social\Http\Middleware\CoreAuthShopifyMiddleware;
 use Devtvn\Social\Http\Middleware\GlobalJwtMiddleware;
 use Devtvn\Social\Http\Middleware\RefreshMiddleware;
 use Devtvn\Social\Http\Middleware\SocialAuthMiddleware;
@@ -29,6 +30,7 @@ class CoreServiceProvider extends ServiceProvider
         app()->make('router')->aliasMiddleware('core', CoreAuthMiddleware::class);
         app()->make('router')->aliasMiddleware('refresh', RefreshMiddleware::class);
         app()->make('router')->aliasMiddleware('global', GlobalJwtMiddleware::class);
+        app()->make('router')->aliasMiddleware('core.shopify',CoreAuthShopifyMiddleware::class);
         $this->publishes([
             __DIR__.'/../config/social.php' => config_path('social.php'),
             __DIR__.'/../lang'              => base_path('resources/lang'),

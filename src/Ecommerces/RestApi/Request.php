@@ -27,7 +27,6 @@ class Request
                     'headers' => $header
                 ]
             );
-
             return [
                 'status' => true,
                 'data' => json_decode($response->getBody()->getContents(), true)

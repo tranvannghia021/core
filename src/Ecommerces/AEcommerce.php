@@ -137,4 +137,10 @@ abstract class AEcommerce extends Request implements IEcommerce
     {
         // TODO: Implement auth() method.
     }
+
+    public function headerAuthBasic(){
+        return [
+            'Authorization'=>'Basic '.base64_encode($this->clientId . ':' . $this->secretId)
+        ];
+    }
 }

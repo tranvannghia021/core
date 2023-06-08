@@ -3,36 +3,33 @@
 namespace Devtvn\Social\Service\SocialPlatform;
 
 use Devtvn\Social\Facades\Social;
-use Devtvn\Social\Helpers\CoreHelper;
 use Devtvn\Social\Helpers\EnumChannel;
-use Devtvn\Social\Repositories\UserRepository;
 use Devtvn\Social\Service\ACoreService;
-use Devtvn\Social\Service\ICoreService;
 use Devtvn\Social\Traits\Response;
 use Illuminate\Support\Facades\Hash;
 
-class GitLabService extends ACoreService
+class LineService extends ACoreService
 {
+
     use Response;
 
     public function __construct()
     {
-        $this->platform = Social::driver(EnumChannel::GITLAB);
+        $this->platform = Social::driver(EnumChannel::LINE);
+        $this->usesPKCE = true;
         parent::__construct();
     }
 
     public function getStructure(...$payload)
     {
-        [$token, $user] = $payload;
+        [$token, $user,$additions] = $payload;
         return [
-            'internal_id' => (string)$user['data']['id'],
-            'first_name' => @$user['data']['name'] ?? @$user['data']['username'],
-            'last_name' => '',
-            'email' => @$user['data']['email'],
-            'address' => @$user['data']['location'],
+            'internal_id' => (string)@$user['data']['sub'] ?? $additions['data']['sub'],
+            'first_name' => @$user['data']['name'] ?? @$additions['data']['name'],
+            'email' => @$additions['data']['email'],
             'email_verified_at' => now(),
-            'platform' => EnumChannel::GITLAB,
-            'avatar' => @$user['data']['avatar_url'],
+            'platform' => EnumChannel::LINE,
+            'avatar' =>@$user['data']['picture'] ??  @$additions['data']['picture'],
             'password' => Hash::make(123456789),
             'status' => true,
             'access_token' => @$token['data']['access_token'],
@@ -45,7 +42,8 @@ class GitLabService extends ACoreService
 
     public function handleAdditional(array $payload, ...$variable)
     {
-        // TODO: Implement handleAdditional() method.
+        [$token,$user]=$variable;
+        return Social::driver(EnumChannel::LINE)->setToken($token['data']['id_token'])->verifyToken();
     }
 
     public function beforeInstall(...$payload)

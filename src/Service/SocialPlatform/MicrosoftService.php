@@ -46,4 +46,19 @@ class MicrosoftService extends ACoreService
     {
         // TODO: Implement handleAdditional() method.
     }
+
+    public function beforeInstall(...$payload)
+    {
+        // TODO: Implement beforeInstall() method.
+    }
+
+    public function middleInstallBothTokenAndProfile(...$payload)
+    {
+        // TODO: Implement middleInstallBothTokenAndProfile() method.
+    }
+
+    public function afterInstall(...$payload)
+    {
+        // TODO: Implement afterInstall() method.
+    }
 }
