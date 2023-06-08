@@ -18,6 +18,11 @@ class BaseRequest extends FormRequest
         return true;
     }
 
+    /**
+     * override method failedValidation
+     * @param Validator $validator
+     * @return void
+     */
     protected function failedValidation(Validator $validator)
     {
 

@@ -8,9 +8,19 @@ use Devtvn\Social\Helpers\EnumChannel;
 
 class Linkedin extends AEcommerce
 {
+    /**
+     * @var array
+     */
     protected $parameters = [];
+
+    /**
+     * @var string
+     */
     protected $separator = ' ';
 
+    /**
+     * construct Linkedin extends AEcommerce
+     */
     public function __construct()
     {
         $this->platform = EnumChannel::LINKEDIN;
@@ -18,6 +28,11 @@ class Linkedin extends AEcommerce
     }
 
 
+    /**
+     * get token third party app
+     * @param string $code
+     * @return mixed
+     */
     public function getAccessToken(string $code)
     {
         return $this->postRequestFormParams("https://www.linkedin.com/oauth/$this->version/accessToken?" . http_build_query(
@@ -27,11 +42,19 @@ class Linkedin extends AEcommerce
         ]);
     }
 
+    /**
+     * refresh token third party app
+     * @return mixed
+     */
     public function refreshToken()
     {
         // TODO: Implement refreshToken() method.
     }
 
+    /**
+     * get profile user third party app
+     * @return mixed
+     */
     public function profile()
     {
         return $this->getRequest("$this->endpoint/$this->version/me?" . http_build_query([
@@ -41,6 +64,10 @@ class Linkedin extends AEcommerce
         ]);
     }
 
+    /**
+     * get email user
+     * @return array
+     */
     public function email()
     {
         return $this->getRequest("$this->endpoint/$this->version/emailAddress?" . http_build_query([
@@ -51,6 +78,10 @@ class Linkedin extends AEcommerce
         ]);
     }
 
+    /**
+     * override method getUrlAuth
+     * @return string
+     */
     public function getUrlAuth()
     {
         return "https://www.linkedin.com/oauth/$this->version/authorization";

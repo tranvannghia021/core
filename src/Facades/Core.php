@@ -2,14 +2,14 @@
 
 namespace Devtvn\Social\Facades;
 
-use Devtvn\Social\Service\Contracts\UserContract;
+use Devtvn\Social\Service\Contracts\CoreContract;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static Devtvn\Social\Service\Contracts\UserContract user()
- * @method static Devtvn\Social\Service\Contracts\UserContract check()
- * @method static Devtvn\Social\Service\Contracts\UserContract setUser(array $user)
- * @see Devtvn\Social\Service\Contracts\UserContract
+ * @method static \Devtvn\Social\Service\Contracts\CoreContract user()
+ * @method static \Devtvn\Social\Service\Contracts\CoreContract check()
+ * @method static \Devtvn\Social\Service\Contracts\CoreContract setUser(array $user)
+ * @see \Devtvn\Social\Service\Contracts\CoreContract
  *
  */
 class Core extends Facade
@@ -19,6 +19,6 @@ class Core extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return UserContract::class;
+        return CoreContract::class;
     }
 }

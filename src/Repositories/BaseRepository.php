@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class BaseRepository implements IRepository
 {
+    /**
+     * @var Model
+     */
     protected $model;
 
     public function __construct(Model $model)
@@ -44,7 +47,6 @@ class BaseRepository implements IRepository
             $model = $this->model->create($data);
         } catch (\Exception $e) {
             throw $e;
-            return [];
         }
         return $model;
     }

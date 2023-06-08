@@ -4,6 +4,11 @@ namespace Devtvn\Social\Ecommerces;
 
 class Ecommerces
 {
+    /**
+     * driver support connect class name with channel
+     * @param $channel
+     * @return AEcommerce|null
+     */
     public static function driver($channel): ?AEcommerce
     {
         $nameSpaces = '\Devtvn\Social\Ecommerces\RestApi\\';

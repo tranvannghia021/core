@@ -23,12 +23,22 @@ class AppController extends Controller
         $this->appCoreService = $appCoreService;
     }
 
+    /**
+     * register a user in app
+     * @param RegisterRequest $request
+     * @return mixed
+     */
     public function register(RegisterRequest $request)
     {
         return $this->appCoreService
             ->register($request->only(array_keys(config('social.custom_request.app.register'))));
     }
 
+    /**
+     * verify callback
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function verify(Request $request)
     {
         if ($request->input('type') === 'verify') {
@@ -40,6 +50,11 @@ class AppController extends Controller
         return view('socials.verify-success');
     }
 
+    /**
+     * send link to email
+     * @param Request $request
+     * @return mixed
+     */
     public function reSendLinkEmail(Request $request)
     {
         $type = $request->input('type', 'verify');
@@ -47,6 +62,11 @@ class AppController extends Controller
 
     }
 
+    /**
+     * login
+     * @param LoginRequest $request
+     * @return mixed
+     */
     public function login(LoginRequest $request)
     {
         return $this->appCoreService->login($request->only([
@@ -55,38 +75,68 @@ class AppController extends Controller
         ]));
     }
 
+    /**
+     * get info
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function user(Request $request)
     {
-        $user=Core::user();
+        $user = Core::user();
         CoreHelper::removeInfoPrivateUser($user);
-        return $this->Response( $user ?? [], "User Info");
+        return $this->Response($user ?? [], "User Info");
     }
 
+    /**
+     * update user
+     * @param Request $request
+     * @return mixed
+     */
     public function updateUser(Request $request)
     {
         return $this->appCoreService->updateUser($request->only(array_keys(config('social.custom_request.app.register'))));
     }
 
+    /**
+     * delete user
+     * @param Request $request
+     * @return mixed
+     */
     public function delete(Request $request)
     {
         return $this->appCoreService->delete(Core::user()['id']);
     }
 
+    /**
+     * change password
+     * @param ChangeRequest $request
+     * @return mixed
+     */
     public function changePassword(ChangeRequest $request)
     {
         return $this->appCoreService->changePassword(Core::user()['id'], $request->input('password_old'),
             $request->input('password'));
     }
 
+    /**
+     * forgot password
+     * @param ResetRequest $request
+     * @return mixed
+     */
     public function reset(ResetRequest $request)
     {
         return $this->appCoreService->forgotPassword($request->input('email'));
     }
 
+    /**
+     * refresh token
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function refresh(Request $request)
     {
         $token = CoreHelper::createPayloadJwt(Core::user());
-        unset($token['jwt']['refresh_token'],$token['jwt']['time_expire_refresh'],$token['userInfo']);
+        unset($token['jwt']['refresh_token'], $token['jwt']['time_expire_refresh'], $token['userInfo']);
         return $this->Response($token, "Refresh Success");
     }
 }

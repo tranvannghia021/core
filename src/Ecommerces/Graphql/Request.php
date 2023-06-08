@@ -4,7 +4,22 @@ use GuzzleHttp\Client;
 
 class Request extends \Devtvn\Social\Ecommerces\RestApi\Request
 {
-    private $accessToken, $endPoint;
+    /**
+     * @var mixed
+     */
+    private $accessToken;
+
+    /**
+     * @var mixed
+     */
+    private $endPoint;
+
+    /**
+     * ready endpoint and token global class
+     * @param $shopDomain
+     * @param $accessToken
+     * @return $this
+     */
     public function setParameters($shopDomain, $accessToken)
     {
         $this->accessToken = $accessToken;
@@ -13,6 +28,7 @@ class Request extends \Devtvn\Social\Ecommerces\RestApi\Request
     }
 
     /**
+     * run query from raw query to graphql
      * @param string $query
      * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
@@ -45,8 +61,8 @@ class Request extends \Devtvn\Social\Ecommerces\RestApi\Request
     }
 
     /**
-     * @param $extensions
      * Handle await when rate limit
+     * @param $extensions
      */
     public function awaitForCreditsRateLimit($extensions): void
     {

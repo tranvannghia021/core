@@ -15,7 +15,7 @@
 - Dropbox
 - Reddit
 - Pinterest(maintenance)
-- Line(maintenance)
+- Line
 - shopify
 ## Official Core SDKs
 <div>

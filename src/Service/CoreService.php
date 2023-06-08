@@ -4,6 +4,12 @@ namespace Devtvn\Social\Service;
 
 class CoreService
 {
+    /**
+     * setChannel support connect with class name by channel
+     * @param string $channel
+     * @param array $variable
+     * @return ACoreService|null
+     */
     public static function setChannel(string $channel, array $variable = []): ?ACoreService
     {
         $nameSpaces = '\Devtvn\Social\Service\SocialPlatform\\';

@@ -8,11 +8,29 @@ use Mockery\Exception;
 
 class Dropbox extends AEcommerce
 {
+    /**
+     * @var string
+     */
     protected $urlAuth = 'https://www.dropbox.com/oauth2/authorize';
+
+    /**
+     * @var string
+     */
     protected $urlToken = '';
+
+    /**
+     * @var array
+     */
     protected $parameters = [];
+
+    /**
+     * @var string
+     */
     protected $separator = ',';
 
+    /**
+     * construct Dropbox extends AEcommerce
+     */
     public function __construct()
     {
         $this->platform = EnumChannel::DROPBOX;
@@ -20,16 +38,29 @@ class Dropbox extends AEcommerce
         parent::__construct();
     }
 
+    /**
+     * get token third party app
+     * @param string $code
+     * @return mixed
+     */
     public function getAccessToken(string $code)
     {
         return $this->postRequestFormParams("$this->endpoint/oauth2/token", [], $this->buildPayloadToken($code));
     }
 
+    /**
+     * refresh token third party app
+     * @return mixed
+     */
     public function refreshToken()
     {
         return $this->postRequestFormParams("$this->endpoint/oauth2/token", [], $this->buildPayloadRefresh());
     }
 
+    /**
+     * get profile user third party app
+     * @return mixed
+     */
     public function profile()
     {
         try {

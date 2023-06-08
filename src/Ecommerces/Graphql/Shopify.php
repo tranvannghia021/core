@@ -4,6 +4,11 @@ namespace Devtvn\Social\Ecommerces\Graphql;
 
 class Shopify extends Request
 {
+    /**
+     * get shop info from shopify
+     * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function shopInfo(){
         try {
             $query = "{

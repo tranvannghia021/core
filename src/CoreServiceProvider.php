@@ -30,13 +30,13 @@ class CoreServiceProvider extends ServiceProvider
         app()->make('router')->aliasMiddleware('core', CoreAuthMiddleware::class);
         app()->make('router')->aliasMiddleware('refresh', RefreshMiddleware::class);
         app()->make('router')->aliasMiddleware('global', GlobalJwtMiddleware::class);
-        app()->make('router')->aliasMiddleware('core.shopify',CoreAuthShopifyMiddleware::class);
+        app()->make('router')->aliasMiddleware('core.shopify', CoreAuthShopifyMiddleware::class);
         $this->publishes([
-            __DIR__.'/../config/social.php' => config_path('social.php'),
-            __DIR__.'/../lang'              => base_path('resources/lang'),
-            __DIR__.'/../views' => resource_path('views'),
-        ],'core-social');
-        $this->loadMigrationsFrom(__DIR__.'/../migrations');
+            __DIR__ . '/../config/social.php' => config_path('social.php'),
+            __DIR__ . '/../lang' => base_path('resources/lang'),
+            __DIR__ . '/../views' => resource_path('views'),
+        ], 'core-social');
+        $this->loadMigrationsFrom(__DIR__ . '/../migrations');
     }
 
     /**
@@ -44,7 +44,7 @@ class CoreServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        foreach (glob(__DIR__.'/../helpers/*.php') as $file) {
+        foreach (glob(__DIR__ . '/../helpers/*.php') as $file) {
             require_once($file);
         }
         $this->app->singleton(

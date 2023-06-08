@@ -1,13 +1,60 @@
 <?php
+
 namespace Devtvn\Social\Ecommerces\RestApi;
+
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 
 class Request
 {
-    protected $_client,$token,$scope;
-    protected $endpoint,$version,$clientId,$secretId,$redirect,$refresh;
+    /**
+     * @var mixed
+     */
+    protected $_client;
 
+    /**
+     * @var mixed
+     */
+    protected $token;
+
+    /**
+     * @var mixed
+     */
+    protected $scope;
+
+    /**
+     * @var mixed
+     */
+    protected $endpoint;
+
+    /**
+     * @var mixed
+     */
+    protected $version;
+
+    /**
+     * @var mixed
+     */
+    protected $clientId;
+
+    /**
+     * @var mixed
+     */
+    protected $secretId;
+
+    /**
+     * @var mixed
+     */
+    protected $redirect;
+
+    /**
+     * @var mixed
+     */
+    protected $refresh;
+
+    /**
+     * construct
+     */
     public function __construct()
     {
         $this->_client = new Client();
@@ -62,16 +109,20 @@ class Request
      * @param array $data
      * @return array
      */
-    public function postRequest(string $url, array $header = [], array $data = [],array $auth = []): array
+    public function postRequest(string $url, array $header = [], array $data = [], array $auth = []): array
     {
         try {
             $response = $this->_client->request('POST', "$url",
                 [
                     'headers' => $header,
                     'body' => json_encode($data),
-                    'auth'=>$auth
+                    'auth' => $auth
                 ]);
-            return ['status' => true, 'code' => $response->getStatusCode(), 'data' => json_decode($response->getBody()->getContents(), true)];
+            return [
+                'status' => true,
+                'code' => $response->getStatusCode(),
+                'data' => json_decode($response->getBody()->getContents(), true)
+            ];
         } catch (GuzzleException $exception) {
             return $this->handleRequestError($exception);
         }
@@ -92,7 +143,11 @@ class Request
                     'headers' => $headers,
                     'body' => json_encode($data)
                 ]);
-            return ['status' => true, 'code' => $response->getStatusCode(), 'data' => json_decode($response->getBody()->getContents(), true)];
+            return [
+                'status' => true,
+                'code' => $response->getStatusCode(),
+                'data' => json_decode($response->getBody()->getContents(), true)
+            ];
 
         } catch (GuzzleException $exception) {
             return $this->handleRequestError($exception);
@@ -115,13 +170,21 @@ class Request
                     'body' => json_encode($data)
                 ]);
 
-            return ['status' => true, 'code' => $response->getStatusCode(), 'data' => json_decode($response->getBody()->getContents(), true)];
+            return [
+                'status' => true,
+                'code' => $response->getStatusCode(),
+                'data' => json_decode($response->getBody()->getContents(), true)
+            ];
         } catch (GuzzleException $exception) {
             return $this->handleRequestError($exception);
         }
     }
 
-    protected function handleRequestError( $exception): array
+    /**
+     * @param $exception
+     * @return array
+     */
+    protected function handleRequestError($exception): array
     {
         $strResponse = $exception->getResponse()->getBody()->getContents();
         try {

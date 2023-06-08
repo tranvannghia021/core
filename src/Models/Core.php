@@ -11,15 +11,22 @@ use Laravel\Sanctum\HasApiTokens;
 class Core extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
-    public $customsFill= [];
+
+    /**
+     * @var array
+     */
+    public $customsFill = [];
+
+
     public function __construct(array $attributes = [])
     {
         $this->setConnection(config('social.db_connection'));
         $this->setTable(config('social.models.table.name'));
-        $this->customsFill=(array)config('social.models.table.customs');
+        $this->customsFill = (array)config('social.models.table.customs');
         self::addColumnCustom();
         parent::__construct($attributes);
     }
+
     /**
      * The attributes that are mass assignable.
      *
@@ -47,9 +54,15 @@ class Core extends Authenticatable
         'domain',
         'raw_domain'
     ];
-    private function addColumnCustom(){
-        foreach ($this->customsFill as $value){
-            $this->fillable[]=$value['column'];
+
+    /**
+     * auto add custom field in fillable
+     * @return void
+     */
+    private function addColumnCustom()
+    {
+        foreach ($this->customsFill as $value) {
+            $this->fillable[] = $value['column'];
         }
     }
     /**
@@ -86,9 +99,9 @@ class Core extends Authenticatable
      */
     public function getAvatarAttribute($value)
     {
-        $url=null;
-        if(!is_null($value) && !str_contains($value,'http')){
-            $url=config('app.url').'/storage/app/'.$value;
+        $url = null;
+        if (!is_null($value) && !str_contains($value, 'http')) {
+            $url = config('app.url') . '/storage/app/' . $value;
         }
         return $url;
     }

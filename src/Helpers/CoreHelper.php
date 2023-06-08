@@ -10,6 +10,12 @@ use Pusher\Pusher;
 
 class CoreHelper
 {
+    /**
+     * encode firebase token
+     * @param array $payload
+     * @param bool $refresh
+     * @return string
+     */
     public static function encodeJwt(array $payload, bool $refresh = false)
     {
         if ($refresh) {
@@ -24,6 +30,12 @@ class CoreHelper
     }
 
 
+    /**
+     * decode firebase token
+     * @param string $jwt
+     * @param bool $refresh
+     * @return mixed
+     */
     public static function decodeJwt(string $jwt, bool $refresh = false)
     {
         $jwt = trim(trim($jwt, 'Bearer'));
@@ -32,6 +44,11 @@ class CoreHelper
     }
 
 
+    /**
+     * encode firebase state
+     * @param array $payload
+     * @return string
+     */
     public static function encodeState(array $payload)
     {
         $payload['expire'] = date("Y-m-d H:i:s", time() + config('social.key_jwt.time.token'));
@@ -39,17 +56,32 @@ class CoreHelper
     }
 
 
+    /**
+     * decode firebase state
+     * @param string $jwt
+     * @return mixed
+     */
     public static function decodeState(string $jwt)
     {
         return json_decode(json_encode(JWT::decode($jwt,
             new Key(config('social.key_jwt.publish.key'), config('social.key_jwt.alg')))), true);
     }
 
+    /**
+     * check token expire
+     * @param string $time
+     * @return bool
+     */
     public static function expireToken(string $time): bool
     {
         return date("Y-m-d H:i:s", time()) > $time;
     }
 
+    /**
+     * get ip user
+     * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public static function ip()
     {
         $ip = request()->ip() ?? null;
@@ -86,6 +118,15 @@ class CoreHelper
 
     }
 
+    /**
+     * trigger socket client
+     * @param string $prefix
+     * @param array $data
+     * @return void
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Pusher\ApiErrorException
+     * @throws \Pusher\PusherException
+     */
     public static function pusher(string $prefix, array $data)
     {
 
@@ -98,6 +139,11 @@ class CoreHelper
         $pusher->trigger(config('social.pusher.channel'), config('social.pusher.event') . $prefix, $data);
     }
 
+    /**
+     * build response jwt
+     * @param $userInfo
+     * @return array
+     */
     public static function createPayloadJwt($userInfo)
     {
         return [
@@ -119,16 +165,29 @@ class CoreHelper
         ];
     }
 
+    /**
+     * check access denied
+     * @param $request
+     * @return bool
+     */
     public static function handleErrorSocial($request)
     {
         return $request->has('errors') || $request->has('error');
     }
 
+    /**
+     * format base64 to hyperlink image
+     * @param $folder
+     * @param $param
+     * @return false|string
+     */
     public static function saveImgBase64($folder, $param)
     {
         $fileExtension = config('social.storage.image_ext');
-        $tagDisk=config('social.storage.disk');
-        if (count(explode(';', $param)) != 2) return false;
+        $tagDisk = config('social.storage.disk');
+        if (count(explode(';', $param)) != 2) {
+            return false;
+        }
         list($extension, $content) = explode(';', $param);
         $tmpExtension = explode('/', $extension);
         if (!in_array($tmpExtension[1], $fileExtension)) {
@@ -149,18 +208,31 @@ class CoreHelper
         return $fileName;
     }
 
-    public static function removeInfoPrivateUser(&$user){
-        unset($user['password'],$user['access_token'],
-        $user['refresh_token'],
-        $user['expire_token'],
+    /**
+     * remove data private
+     * @param $user
+     * @return void
+     */
+    public static function removeInfoPrivateUser(&$user)
+    {
+        unset($user['password'], $user['access_token'],
+            $user['refresh_token'],
+            $user['expire_token'],
         );
     }
 
-    public static function setIpState(&$payload){
-        $result=self::ip();
-        $payload['ip']=request()->ip();
-        if($result['status']){
-            $payload['ip']=$result['ip'];
+    /**
+     * push ip into variable
+     * @param $payload
+     * @return void
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public static function setIpState(&$payload)
+    {
+        $result = self::ip();
+        $payload['ip'] = request()->ip();
+        if ($result['status']) {
+            $payload['ip'] = $result['ip'];
         }
     }
 

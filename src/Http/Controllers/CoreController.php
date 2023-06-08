@@ -11,6 +11,13 @@ use Mockery\Exception;
 
 class CoreController extends Controller
 {
+    /**
+     * generate link
+     * @param Request $request
+     * @param $platform
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function generateUrl(Request $request,$platform){
         if(!in_array($platform,EnumChannel::PLATFROM)){
             throw new Exception(__('core.platform_not_support'));
@@ -21,6 +28,11 @@ class CoreController extends Controller
         return CoreService::setChannel($platform)->generateUrl($payload);
     }
 
+    /**
+     * handle callback
+     * @param Request $request
+     * @return array|\Illuminate\Http\RedirectResponse
+     */
     public function handleAuth(Request $request){
         if(CoreHelper::handleErrorSocial($request)){
             return ['status'=>false,'error'=>'Auth failed'];
