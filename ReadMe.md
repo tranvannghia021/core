@@ -21,6 +21,7 @@
 <div>
 <ul>
     <li><a href="https://github.com/tranvannghia021/core">Php</a></li>
+    <li><a href="https://github.com/tranvannghia021/gocore">GoLang</a></li>
 </ul>
 </div>
 
@@ -93,5 +94,21 @@ php artisan queue:work {onconnection in file social.php} --queue={onqueue in fil
 ```bash
   {host}/api/handle/auth 
 ```
+## API
+
+| Method | URI                         | Action                             | Middleware                       |
+|--------|-----------------------------|------------------------------------|----------------------------------|
+| POST   | api/{platform}/generate-url | CoreController@generateUrl         | global                           |
+| GET    | api/handle/auth             | CoreController@handleAuth          | social.auth,core.shopify,global  |
+| POST   | api/app/login               | AppController@login                | global                           |
+| POST   | api/app/register            | CoreController@register            | global                           |
+| POST   | api/app/refresh             | CoreController@refresh             | refresh                          |
+| DELETE | api/app/delete              | CoreController@delete              | core ,global                     |
+| GET    | api/app/info                | CoreController@user                | core ,global                     |
+| POST   | api/app/info                | CoreController@updateUser          | core  ,global                    |
+| PUT    | api/app/change-password     | CoreController@changePassword      | core ,global                     |
+| POST   | api/app/forgot-password     | CoreController@reset               | global                           |
+| POST   | api/app/re-send             | CoreController@reSendLinkEmail     | global                           |
+
 
 ## MIT
