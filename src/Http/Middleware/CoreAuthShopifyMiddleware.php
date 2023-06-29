@@ -17,7 +17,8 @@ class CoreAuthShopifyMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if ($request->header('X-Shopify-Hmac-SHA256') !== null && !$this->verifyHmac($request)) {
+
+        if ($request->input('hmac') !== null && !$this->verifyHmac($request)) {
             throw new Exception("Auth is invalid");
         }
         Cache::put('domain_'.$request->input('code'),$request->input('shop'),60);
@@ -26,11 +27,8 @@ class CoreAuthShopifyMiddleware
 
     public function verifyHmac($request)
     {
-        return hash_equals(
-            base64_encode(
-                hash_hmac('sha256',
-                    file_get_contents('php://input'),
-                    config('social.platform.shopify.client_secret'), true)),
-            $request->header('X-Shopify-Hmac-SHA256'));
+        $body=$request->only(["code","shop","host","timestamp","state"]);
+        ksort($body);
+        return$request->input("hmac") === hash_hmac('sha256', http_build_query($body),config('social.platform.shopify.client_secret'));
     }
 }
