@@ -11,7 +11,7 @@ use Devtvn\Social\Service\ICoreService;
 use Devtvn\Social\Traits\Response;
 use Illuminate\Support\Facades\Hash;
 
-class GitLabService extends ACoreService
+class GitlabService extends ACoreService
 {
     use Response;
 

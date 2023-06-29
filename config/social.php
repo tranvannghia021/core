@@ -185,8 +185,6 @@ return [
             'version' => env('DROPBOX_VERSION', '2'),
             'scope' => [
                 'account_info.read',
-                'profile',
-                'email'
             ],
         ],
         'reddit' => [
