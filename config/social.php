@@ -120,7 +120,7 @@ return [
             'base_api' => env('INSTAGRAM_BASE_API', 'https://graph.instagram.com'),
             'scope' => [
                 'email',
-                'public_profile'
+                'user_profile'
             ],
             'field' => [
                 'id',
