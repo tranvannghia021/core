@@ -10,6 +10,8 @@ use Devtvn\Social\Http\Middleware\SocialAuthMiddleware;
 use Devtvn\Social\Http\Middleware\VerifyMiddleware;
 use Devtvn\Social\Service\AppCoreService;
 use Devtvn\Social\Service\Contracts\CoreContract;
+use Devtvn\Social\Service\Contracts\PubSubContract;
+use Devtvn\Social\Service\PubSub\PubSubService;
 use Illuminate\Support\ServiceProvider;
 
 
@@ -50,6 +52,9 @@ class CoreServiceProvider extends ServiceProvider
         $this->app->singleton(
             CoreContract::class,
             AppCoreService::class);
+        $this->app->singleton(
+            PubSubContract::class,
+            PubSubService::class);
 
     }
 }
