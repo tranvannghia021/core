@@ -63,7 +63,7 @@ class Instagram extends AEcommerce
     public function profile()
     {
         return $this->getRequest("$this->endpoint/me?" . http_build_query([
-                'fields' => implode(',', config('social.platform.instagram_basic.field')),
+                'fields' => implode(',', config('social.platform.instagram.field')),
                 'access_token' => $this->token
             ]));
     }
